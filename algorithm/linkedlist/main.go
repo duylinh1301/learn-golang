@@ -1,56 +1,85 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
-	var list *LinkedList
 
-	list = &LinkedList{}
+	linkedList := new(LinkedList)
 
-	element1 := LinkedList{
-		data: "item 1",
-		next: nil,
-	}
+	linkedList.addHeadItem(10)
 
-	element2 := LinkedList{
-		data: "item 2",
-		next: nil,
-	}
+	linkedList.addHeadItem(25)
 
-	list.add(&element1)
+	linkedList.addHeadItem(40)
 
-	list.add(&element2)
+	linkedList.addHeadItem(5)
 
-	show(list)
+	linkedList.addHeadItem(0)
+
+	linkedList.addHeadItem(15)
+
+	linkedList.show()
 
 }
 
-// LinkedList danh sach lien ket
+// LinkedList is a is a list store many node
 type LinkedList struct {
-	data string
-	next *LinkedList
+	name string
+
+	head *Node
 }
 
-func (list *LinkedList) add(item *LinkedList) bool {
-	if list == nil {
-		list = item
+func (l *LinkedList) addHeadItem(data int) bool {
+	node := new(Node)
+
+	node.data = data
+
+	if l.head == nil {
+		l.head = node
 	} else {
-		for list.next != nil {
-			list = list.next
+		var index *Node
+
+		index = l.head
+
+		for index.next != nil {
+			index = index.next
 		}
-		list.next = item
+
+		index.next = node
 	}
 
 	return true
 }
 
-func show(list *LinkedList) bool {
-	var index *LinkedList
-	index = list
+func (l *LinkedList) show() bool {
 
-	for index != nil {
-		fmt.Println(index.data)
-		index = index.next
+	if l == nil {
+		fmt.Println("List empty!")
 	}
+
+	var index *Node
+
+	index = l.head
+
+	for {
+		fmt.Println(index.data)
+
+		if index.next == nil {
+			break
+		}
+
+		index = index.next
+
+	}
+
 	return true
+}
+
+// Node is a struct type for one element of linked list
+type Node struct {
+	data int
+
+	next *Node
 }
