@@ -8,17 +8,17 @@ func main() {
 
 	linkedList := new(LinkedList)
 
-	linkedList.addHeadItem(10)
+	linkedList.addTailItem(10)
 
-	linkedList.addHeadItem(25)
+	linkedList.addTailItem(25)
 
-	linkedList.addHeadItem(40)
+	linkedList.addTailItem(40)
 
-	linkedList.addHeadItem(5)
+	linkedList.addTailItem(5)
 
-	linkedList.addHeadItem(0)
+	linkedList.addTailItem(0)
 
-	linkedList.addHeadItem(15)
+	linkedList.addTailItem(15)
 
 	linkedList.show()
 
@@ -31,7 +31,7 @@ type LinkedList struct {
 	head *Node
 }
 
-func (l *LinkedList) addHeadItem(data int) bool {
+func (l *LinkedList) addTailItem(data int) bool {
 	node := new(Node)
 
 	node.data = data
