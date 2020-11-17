@@ -28,6 +28,8 @@ func main() {
 
 	linkedList.addHeadItem(150)
 
+	linkedList.addItemWithPosition(500, 20)
+
 	linkedList.show()
 
 }
@@ -39,6 +41,7 @@ type LinkedList struct {
 	head *Node
 }
 
+// addTailItem function for add item to the tail of the list
 func (l *LinkedList) addTailItem(data int) bool {
 	node := new(Node)
 
@@ -61,6 +64,7 @@ func (l *LinkedList) addTailItem(data int) bool {
 	return true
 }
 
+// addTailItem function for add item to the head of the list
 func (l *LinkedList) addHeadItem(data int) bool {
 	node := Node{
 		data: data,
@@ -83,6 +87,44 @@ func (l *LinkedList) addHeadItem(data int) bool {
 	return true
 }
 
+// addTailItem function for add item to the position of the list
+func (l *LinkedList) addItemWithPosition(data int, position int) bool {
+	var index *Node
+
+	node := Node{
+		data: data,
+	}
+
+	index = l.head
+
+	count := 1
+
+	if position == 0 || l.head == nil {
+		node.next = l.head
+
+		l.head = &node
+
+		return true
+	}
+
+	for index.next != nil {
+		if count == position || position == 0 {
+			break
+		}
+
+		index = index.next
+
+		count++
+	}
+
+	node.next = index.next
+
+	index.next = &node
+
+	return true
+}
+
+// show function print data of the list
 func (l *LinkedList) show() bool {
 
 	if l == nil {
