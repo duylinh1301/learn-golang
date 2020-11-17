@@ -8,27 +8,19 @@ func main() {
 
 	linkedList := new(LinkedList)
 
-	linkedList.addTailItem(10)
-
-	linkedList.addHeadItem(100)
-
-	linkedList.addTailItem(25)
-
-	linkedList.addHeadItem(125)
+	// linkedList.deleteHeadItem()
 
 	linkedList.addTailItem(40)
 
-	linkedList.addTailItem(5)
-
-	linkedList.addTailItem(0)
-
 	linkedList.addTailItem(15)
 
-	linkedList.addHeadItem(275)
+	linkedList.addTailItem(25)
 
-	linkedList.addHeadItem(150)
+	// linkedList.addTailItem(30)
 
-	linkedList.addItemWithPosition(500, 20)
+	// linkedList.addTailItem(50)
+
+	linkedList.deleteTailItem()
 
 	linkedList.show()
 
@@ -120,6 +112,35 @@ func (l *LinkedList) addItemWithPosition(data int, position int) bool {
 	node.next = index.next
 
 	index.next = &node
+
+	return true
+}
+
+// deleteHeadItem function for delete first item of the list
+func (l *LinkedList) deleteHeadItem() bool {
+
+	if l.head == nil {
+		return true
+	}
+
+	l.head = l.head.next
+
+	return true
+}
+
+// deleteHeadItem function for delete last item of the list
+func (l *LinkedList) deleteTailItem() bool {
+
+	index := l.head
+	var preIndex *Node
+
+	for index.next != nil {
+		preIndex = index
+		index = index.next
+	}
+
+	index = nil
+	preIndex.next = nil
 
 	return true
 }
