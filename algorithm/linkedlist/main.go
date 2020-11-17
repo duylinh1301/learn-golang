@@ -16,11 +16,17 @@ func main() {
 
 	linkedList.addTailItem(25)
 
-	// linkedList.addTailItem(30)
+	linkedList.addTailItem(30)
 
-	// linkedList.addTailItem(50)
+	linkedList.addTailItem(50)
 
-	linkedList.deleteTailItem()
+	linkedList.deleteItemWithValue(40)
+	linkedList.deleteItemWithValue(15)
+	linkedList.deleteItemWithValue(25)
+
+	// linkedList.deleteTailItem()
+
+	linkedList.addHeadItem(5)
 
 	linkedList.show()
 
@@ -145,11 +151,56 @@ func (l *LinkedList) deleteTailItem() bool {
 	return true
 }
 
+func (l *LinkedList) deleteItemWithValue(value int) bool {
+	if l.head == nil {
+		return true
+	}
+
+	doDelete := false
+
+	index := l.head
+
+	var preIndex *Node
+
+	for {
+		if index.data == value {
+			doDelete = true
+
+			break
+		}
+
+		if index.next == nil {
+			break
+		}
+
+		preIndex = index
+
+		index = index.next
+	}
+
+	if doDelete {
+
+		if preIndex == nil {
+			l.head = index.next
+
+			index = nil
+		} else {
+			preIndex.next = index.next
+
+			index.next = nil
+		}
+
+	}
+
+	return true
+}
+
 // show function print data of the list
 func (l *LinkedList) show() bool {
 
-	if l == nil {
+	if l == nil || l.head == nil {
 		fmt.Println("List empty!")
+		return false
 	}
 
 	var index *Node
