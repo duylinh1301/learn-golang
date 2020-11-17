@@ -10,7 +10,11 @@ func main() {
 
 	linkedList.addTailItem(10)
 
+	linkedList.addHeadItem(100)
+
 	linkedList.addTailItem(25)
+
+	linkedList.addHeadItem(125)
 
 	linkedList.addTailItem(40)
 
@@ -19,6 +23,10 @@ func main() {
 	linkedList.addTailItem(0)
 
 	linkedList.addTailItem(15)
+
+	linkedList.addHeadItem(275)
+
+	linkedList.addHeadItem(150)
 
 	linkedList.show()
 
@@ -48,6 +56,28 @@ func (l *LinkedList) addTailItem(data int) bool {
 		}
 
 		index.next = node
+	}
+
+	return true
+}
+
+func (l *LinkedList) addHeadItem(data int) bool {
+	node := Node{
+		data: data,
+	}
+
+	if l == nil {
+		fmt.Println("Linked list is empty!")
+		return false
+	}
+
+	if l.head == nil {
+		l.head = &node
+	} else {
+		node.next = l.head
+
+		l.head = &node
+
 	}
 
 	return true
