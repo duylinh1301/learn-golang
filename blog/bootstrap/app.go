@@ -7,7 +7,7 @@ import (
 
 func HandleRequests() {
 	// Declare router
-	New()
+	route := New()
 	// Start the server on port 10000
-	log.Fatal(http.ListenAndServe(":10000", nil))
+	log.Fatal(http.ListenAndServe(":10000", route))
 }
