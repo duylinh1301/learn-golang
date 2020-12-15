@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// Define array of routes
 var ApiRoutes = []objects.Route{
 	objects.Route{
 		Uri:     "/posts",

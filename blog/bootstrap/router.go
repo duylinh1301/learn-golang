@@ -7,19 +7,23 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func New() *mux.Router {
+// InitRoute init route
+func InitRoute() *mux.Router {
 	r := mux.NewRouter().StrictSlash(true)
+
 	return SetupRoutes(r)
 }
 
-func Load() []objects.Route {
+// LoadRoutes load all route defined in route/api.go
+func LoadRoutes() []objects.Route {
 	routes := route.ApiRoutes
+
 	return routes
 }
 
+// SetupRoutes set route for listen server
 func SetupRoutes(r *mux.Router) *mux.Router {
-
-	for _, route := range Load() {
+	for _, route := range LoadRoutes() {
 		r.HandleFunc("/api"+route.Uri, route.Handler).Methods(route.Method)
 	}
 
