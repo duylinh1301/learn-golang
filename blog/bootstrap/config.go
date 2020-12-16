@@ -1,7 +1,6 @@
 package bootstrap
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/joho/godotenv"
@@ -22,8 +21,6 @@ func loadEnv() map[string]string {
 	var env map[string]string
 
 	env, err = godotenv.Read()
-
-	fmt.Println(env)
 
 	if err != nil {
 		log.Println(err)

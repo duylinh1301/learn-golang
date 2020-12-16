@@ -2,7 +2,8 @@ package route
 
 import (
 	objects "blog/bootstrap/objects"
-	postcontroller "blog/controllers/blog"
+	postcontroller "blog/http/controllers/blog"
+	usercontroller "blog/http/controllers/user"
 	"net/http"
 )
 
@@ -13,9 +14,9 @@ var ApiRoutes = []objects.Route{
 		Method:  http.MethodGet,
 		Handler: postcontroller.GetAllPosts,
 	},
-	// bootstrap.Route{
-	// 	Uri:     "posts",
-	// 	Method:  http.MethodGet,
-	// 	Handler: postcontroller.GetAllPosts,
-	// },
+	objects.Route{
+		Uri:     "/users",
+		Method:  http.MethodGet,
+		Handler: usercontroller.AllUser,
+	},
 }
