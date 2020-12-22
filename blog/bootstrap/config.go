@@ -6,6 +6,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
+var env = loadEnv()
+
 //LoadConfig load env and app config
 func LoadConfig() map[string]string {
 	// var config []string
@@ -18,13 +20,13 @@ func LoadConfig() map[string]string {
 func loadEnv() map[string]string {
 	var err error
 
-	var env map[string]string
+	var data map[string]string
 
-	env, err = godotenv.Read()
+	data, err = godotenv.Read()
 
 	if err != nil {
 		log.Println(err)
 	}
 
-	return env
+	return data
 }

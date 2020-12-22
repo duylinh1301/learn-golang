@@ -4,11 +4,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"gorm.io/gorm"
 )
+
+var db *gorm.DB
 
 // HandleRequests load all config for every request
 func HandleRequests() {
 	// Declare router
+	// db = ConnectDB()
+
 	route := InitRoute()
 
 	// Load application config
