@@ -1,22 +1,27 @@
-package bootstrap
+package repositories
 
 import (
 	"fmt"
 	"log"
 
+	config "blog/config"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-
-	config "blog/config"
 )
 
+// AbstractRepository eloquent repository to reuse function query db
+type AbstractRepository struct {
+}
+
+var db = connectDB()
 var env = config.Env
 
-func ConnectDB() *gorm.DB {
-	fmt.Println("123123")
+func connectDB() *gorm.DB {
+	fmt.Println("2")
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", env["DB_USERNAME"], env["DB_PASSWORD"], env["DB_HOST"], env["DB_PORT"], env["DB_DATABASE"])
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	connection, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		log.Println("Connection Failed to Open")
@@ -24,9 +29,11 @@ func ConnectDB() *gorm.DB {
 		log.Println("Connection to " + env["DB_CONNECTION"] + " established")
 	}
 
-	return db
+	return connection
 }
 
-func SetupDatabase(config map[string]string) {
-
+// All function get all records from model
+func All(model *[]interface{}) interface{} {
+	db.Find(&model)
+	return model
 }

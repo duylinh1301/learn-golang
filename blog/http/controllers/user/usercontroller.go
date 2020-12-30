@@ -7,7 +7,7 @@ import (
 )
 
 // AllUser get list users
-func AllUser(w http.ResponseWriter, r *http.Request) {
+func GetAll(w http.ResponseWriter, r *http.Request) {
 	user := models.User{
 		Id:       1,
 		Username: "Linh Nguyen",

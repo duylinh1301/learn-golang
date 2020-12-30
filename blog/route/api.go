@@ -12,11 +12,11 @@ var ApiRoutes = []objects.Route{
 	objects.Route{
 		Uri:     "/posts",
 		Method:  http.MethodGet,
-		Handler: postcontroller.GetAllPosts,
+		Handler: postcontroller.GetAll,
 	},
 	objects.Route{
 		Uri:     "/users",
 		Method:  http.MethodGet,
-		Handler: usercontroller.AllUser,
+		Handler: usercontroller.GetAll,
 	},
 }

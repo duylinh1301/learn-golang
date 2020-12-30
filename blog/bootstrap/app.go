@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	config "blog/config"
+
 	"gorm.io/gorm"
 )
 
@@ -12,18 +14,17 @@ var db *gorm.DB
 
 // HandleRequests load all config for every request
 func HandleRequests() {
-	// Declare router
-	// db = ConnectDB()
-
-	route := InitRoute()
 
 	// Load application config
-	config := LoadConfig()
+	env := config.Env
+
+	// Declare router
+	route := InitRoute()
 
 	// Start the server on port
 	port := "10000"
 
-	value, exists := config["API_PORT"]
+	value, exists := env["API_PORT"]
 
 	if exists {
 		port = value

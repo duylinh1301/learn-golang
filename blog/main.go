@@ -1,6 +1,8 @@
 package main
 
-import "blog/bootstrap"
+import (
+	bootstrap "blog/bootstrap"
+)
 
 func main() {
 	bootstrap.HandleRequests()
