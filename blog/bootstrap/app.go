@@ -30,7 +30,9 @@ func HandleRequests() {
 		port = value
 	}
 
-	fmt.Printf("[Listening]: %s\n", port)
+	domain, exists := env["DB_HOST"]
+
+	fmt.Printf("[Listening]: %s:%s\n", domain, port)
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), route))
 }

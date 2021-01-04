@@ -1,11 +1,8 @@
 package usercontroller
 
 import (
-	"blog/http/response"
 	"blog/models"
 	"net/http"
-
-	repository "blog/repositories"
 )
 
 // AllUser get list users
@@ -15,9 +12,16 @@ import (
 // return Mix
 
 func GetAll(w http.ResponseWriter, r *http.Request) {
-	user := []models.User{}
+	// user := []models.User{}
 
-	repository.All(&user)
+	// repository.All(&user)
 
-	response.ReturnJSON(w, http.StatusOK, "", user)
+	// response.ReturnJSON(w, http.StatusOK, "", user)
+
+	user := models.User{}
+
+	// user.BaseModel.All()
+
+	user.BaseModel.SetModel(user)
+	user.BaseModel.All()
 }

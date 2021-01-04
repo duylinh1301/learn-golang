@@ -1,10 +1,14 @@
 package models
 
-import "gorm.io/gorm"
+import kernel "blog/kernel/model"
 
+// Post model
 type Post struct {
-	Id      int    `json:"id"`
+	ID      int    `json:"id"`
 	Title   string `json:"title"`
 	Content string `json:"content"`
-	db      *gorm.DB
+
+	// BaseModel kernel.BaseModel
+
+	BaseModel kernel.BaseModel
 }

@@ -10,8 +10,8 @@ import (
 	"gorm.io/gorm"
 )
 
-// AbstractRepository eloquent repository to reuse function query db
-type AbstractRepository struct {
+// BaseRepository eloquent repository to reuse function query db
+type BaseRepository struct {
 }
 
 var db = connectDB()
@@ -32,7 +32,9 @@ func connectDB() *gorm.DB {
 }
 
 // All function get all records from model
-func All(model interface{}) bool {
-	db.Find(model)
+func (abstracRepo BaseRepository) All() bool {
+	// fmt.Println("All function in base repo")
+	// fmt.Println(abstracRepo.GetModel())
+	// db.Find(model)
 	return true
 }
