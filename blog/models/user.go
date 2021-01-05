@@ -1,11 +1,8 @@
 package models
 
-import kernel "blog/kernel/model"
-
+// User mapping users table
 type User struct {
 	ID       int    `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
-
-	BaseModel kernel.BaseModel
 }

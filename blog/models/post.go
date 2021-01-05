@@ -1,14 +1,8 @@
 package models
 
-import kernel "blog/kernel/model"
-
-// Post model
+// Post model mapping posts table
 type Post struct {
 	ID      int    `json:"id"`
 	Title   string `json:"title"`
 	Content string `json:"content"`
-
-	// BaseModel kernel.BaseModel
-
-	BaseModel kernel.BaseModel
 }

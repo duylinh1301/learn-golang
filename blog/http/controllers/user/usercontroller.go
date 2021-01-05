@@ -1,7 +1,6 @@
 package usercontroller
 
 import (
-	"blog/models"
 	"net/http"
 )
 
@@ -18,10 +17,10 @@ func GetAll(w http.ResponseWriter, r *http.Request) {
 
 	// response.ReturnJSON(w, http.StatusOK, "", user)
 
-	user := models.User{}
+	// user := models.User{}
 
+	// // user.BaseModel.All()
+
+	// user.BaseModel.SetModel(user)
 	// user.BaseModel.All()
-
-	user.BaseModel.SetModel(user)
-	user.BaseModel.All()
 }
