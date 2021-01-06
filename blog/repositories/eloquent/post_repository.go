@@ -1,12 +1,13 @@
 package eloquent
 
 import (
+	"blog/repositories"
 	"blog/repositories/interfaces"
 	"fmt"
 )
 
 type PostRepository struct {
-	BaseRepo BaseRepository
+	repositories.BaseRepository
 }
 
 func NewPostRepository() interfaces.PostRepositoryInterface {
@@ -14,5 +15,5 @@ func NewPostRepository() interfaces.PostRepositoryInterface {
 }
 
 func (*PostRepository) All() {
-	fmt.Println("all function in post repository")
+	fmt.Println("all function in post eloquent repository")
 }

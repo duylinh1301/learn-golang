@@ -1,11 +1,13 @@
 package mongodb
 
 import (
+	"blog/repositories"
 	"blog/repositories/interfaces"
 	"fmt"
 )
 
 type PostRepository struct {
+	repositories.BaseRepository
 }
 
 func NewPostRepository() interfaces.PostRepositoryInterface {
@@ -13,5 +15,5 @@ func NewPostRepository() interfaces.PostRepositoryInterface {
 }
 
 func (*PostRepository) All() {
-	fmt.Println("all function in post repository")
+	fmt.Println("all function in post mongo repository")
 }

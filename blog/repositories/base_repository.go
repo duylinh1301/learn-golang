@@ -33,7 +33,7 @@ func connectDB() *gorm.DB {
 
 // All function get all records from model
 func (abstracRepo BaseRepository) All() bool {
-	// fmt.Println("All function in base repo")
+	fmt.Println("All function in base repo")
 	// fmt.Println(abstracRepo.GetModel())
 	// db.Find(model)
 	return true

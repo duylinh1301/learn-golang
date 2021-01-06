@@ -3,16 +3,16 @@ package postcontroller
 import (
 	// db "blog/bootstrap"
 
+	"blog/repositories/eloquent"
 	"blog/repositories/interfaces"
-	"blog/repositories/mongodb"
 	"fmt"
 	"net/http"
 	"reflect"
 )
 
 var (
-	// postRepository interfaces.PostRepositoryInterface = eloquent.NewPostRepository()
-	postRepository interfaces.PostRepositoryInterface = mongodb.NewPostRepository()
+	postRepository interfaces.PostRepositoryInterface = eloquent.NewPostRepository()
+	// postRepository interfaces.PostRepositoryInterface = mongodb.NewPostRepository()
 )
 
 // GetAll return all posts
@@ -24,9 +24,9 @@ func GetAll(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(postRepository)
 
-	// postRepository.BaseRepo.Test()
+	postRepository.All()
 
-	postRepository.BaseRepo.Test()
+	// postRepository.All()
 
 	// post := models.Post{}
 
