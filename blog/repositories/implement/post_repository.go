@@ -1,9 +1,9 @@
 package implement
 
 import (
+	"blog/models"
 	"blog/repositories/common"
 	"blog/repositories/interfaces"
-	"fmt"
 )
 
 // PostRepository map post model
@@ -12,6 +12,7 @@ type PostRepository struct {
 
 var (
 	baseRepo interfaces.BaseRepositoryInterface = common.NewMysqlRepository()
+	model                                       = []models.Post{}
 )
 
 // NewPostRepository create instance
@@ -20,7 +21,7 @@ func NewPostRepository() *PostRepository {
 }
 
 // All get all
-func (*PostRepository) All() {
-	fmt.Println("Ham All cua post repository")
-	baseRepo.All()
+func (*PostRepository) All() interface{} {
+	baseRepo.All(&model)
+	return &model
 }

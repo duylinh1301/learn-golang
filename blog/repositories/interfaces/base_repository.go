@@ -1,5 +1,5 @@
 package interfaces
 
 type BaseRepositoryInterface interface {
-	All()
+	All(model interface{})
 }

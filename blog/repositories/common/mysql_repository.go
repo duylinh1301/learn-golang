@@ -37,9 +37,6 @@ func NewMysqlRepository() interfaces.BaseRepositoryInterface {
 }
 
 // All function get all records from model
-func (*MysqlRepository) All() {
-	fmt.Println("All function in MYSQL repo")
-	// fmt.Println(abstracRepo.GetModel())
-	// db.Find(model)
-	// return true
+func (*MysqlRepository) All(model interface{}) {
+	db.Find(model)
 }
