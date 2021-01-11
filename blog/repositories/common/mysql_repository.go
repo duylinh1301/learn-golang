@@ -1,17 +1,17 @@
-package repositories
+package common
 
 import (
+	"blog/config"
+	"blog/repositories/interfaces"
 	"fmt"
 	"log"
-
-	config "blog/config"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-// BaseRepository eloquent repository to reuse function query db
-type BaseRepository struct {
+// MysqlRepository connect to MYSQL database
+type MysqlRepository struct {
 }
 
 var db = connectDB()
@@ -31,10 +31,15 @@ func connectDB() *gorm.DB {
 	return connection
 }
 
+// NewMysqlRepository create instance
+func NewMysqlRepository() interfaces.BaseRepositoryInterface {
+	return &MysqlRepository{}
+}
+
 // All function get all records from model
-func (abstracRepo BaseRepository) All() bool {
-	fmt.Println("All function in base repo")
+func (*MysqlRepository) All() {
+	fmt.Println("All function in MYSQL repo")
 	// fmt.Println(abstracRepo.GetModel())
 	// db.Find(model)
-	return true
+	// return true
 }

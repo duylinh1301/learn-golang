@@ -3,26 +3,20 @@ package postcontroller
 import (
 	// db "blog/bootstrap"
 
-	"blog/repositories/eloquent"
-	"blog/repositories/interfaces"
+	"blog/repositories/implement"
 	"fmt"
 	"net/http"
-	"reflect"
 )
 
 var (
-	postRepository interfaces.PostRepositoryInterface = eloquent.NewPostRepository()
+	postRepository = implement.NewPostRepository()
 	// postRepository interfaces.PostRepositoryInterface = mongodb.NewPostRepository()
 )
 
 // GetAll return all posts
 func GetAll(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Println(reflect.TypeOf(postRepository))
-
-	// postRepo := eloquent.NewPostRepository()
-
-	fmt.Println(postRepository)
+	fmt.Println("Day la ham GetAll PostController")
 
 	postRepository.All()
 
