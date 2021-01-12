@@ -23,4 +23,5 @@ func GetAll(w http.ResponseWriter, r *http.Request) {
 
 	// user.BaseModel.SetModel(user)
 	// user.BaseModel.All()
+	return
 }

@@ -15,6 +15,11 @@ var ApiRoutes = []objects.Route{
 		Handler: postcontroller.GetAll,
 	},
 	objects.Route{
+		Uri:     "/posts/create",
+		Method:  http.MethodPost,
+		Handler: postcontroller.Create,
+	},
+	objects.Route{
 		Uri:     "/users",
 		Method:  http.MethodGet,
 		Handler: usercontroller.GetAll,
