@@ -29,9 +29,11 @@ func GetAll(w http.ResponseWriter, r *http.Request) {
 // Create posts data
 func Create(w http.ResponseWriter, r *http.Request) {
 
-	var p models.Post
+	var post models.Post
 
-	err := request.DecodeJSONBody(r, p)
+	err := request.DecodeJSONBody(r, &post)
+
+	postRepository.Create(post)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -41,14 +43,4 @@ func Create(w http.ResponseWriter, r *http.Request) {
 
 	response.ReturnJSON(w, http.StatusOK, "", nil)
 	return
-
-	// fmt.Println(r.Header.Get("Content-Type"))
-
-	// decoder := json.NewDecoder(r.Body)
-	// var p models.Post
-	// err := decoder.Decode(&p)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// log.Println(p)
 }

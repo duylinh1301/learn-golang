@@ -5,6 +5,7 @@ import (
 	"blog/repositories/interfaces"
 	"fmt"
 	"log"
+	"reflect"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -38,5 +39,38 @@ func NewMysqlRepository() interfaces.BaseRepositoryInterface {
 
 // All function get all records from model
 func (*MysqlRepository) All(model interface{}) {
+	fmt.Println(reflect.TypeOf(model))
+	fmt.Println(model)
 	db.Find(model)
+}
+
+// Create function create a record from model
+func (*MysqlRepository) Create(table string, data map[string]interface{}) {
+	// post := models.Post{
+	// 	Title:   "Linh add title",
+	// 	Content: "Linh add content",
+	// }
+
+	// // f := make([]reflect.StructField, len(v))
+
+	// fmt.Println(reflect.TypeOf(&post))
+
+	// // result := db.Create(&post)
+
+	// fmt.Println(model)
+
+	// fmt.Println(reflect.TypeOf(&model))
+
+	// data := reflect.Indirect(reflect.ValueOf(model))
+
+	// fmt.Println(reflect.TypeOf(data.()))
+
+	// fmt.Println("data value")
+
+	// fmt.Println(fmt.Println(post.GetField()))
+
+	db.Table("posts").Create(data)
+
+	// fmt.Println(result.Error)
+
 }
