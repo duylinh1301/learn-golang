@@ -2,9 +2,6 @@ package implement
 
 import (
 	"blog/models"
-	"blog/repositories/common"
-	"blog/repositories/interfaces"
-	"fmt"
 )
 
 // PostRepository map post model
@@ -12,33 +9,28 @@ type PostRepository struct {
 }
 
 var (
-	baseRepo   interfaces.BaseRepositoryInterface = common.NewMysqlRepository()
-	arrayModel                                    = []models.Post{}
-	model                                         = models.Post{}
+	arrayModelPost = []models.Post{}
+	modelPost      = models.Post{}
 )
 
 // NewPostRepository create instance
 func NewPostRepository() *PostRepository {
+
 	return &PostRepository{}
 }
 
 // All get all
 func (*PostRepository) All() interface{} {
-	baseRepo.All(&arrayModel)
-	return &arrayModel
+	baseRepo.All(&arrayModelPost)
+	return &arrayModelPost
 }
 
-func (*PostRepository) Create(data models.BaseModelInterface) {
-	// modelIns := models.Post{
-	// 	Title:   "Title hardcode",
-	// 	Content: "Content hardcode",
-	// }
+func (*PostRepository) Create(dataPostInterface models.BaseModelInterface) {
 
-	// table := db.NewScope(model).TableName()
-	fmt.Println(model.TableName())
+	dataPost := dataPostInterface.(models.Post)
 
-	// baseRepo.Create(map[string]interface{}{
-	// 	"Title":   modelIns.Title,
-	// 	"Content": modelIns.Content,
-	// })
+	baseRepo.Create(modelPost.TableName(), map[string]interface{}{
+		"Title":   dataPost.Title,
+		"Content": dataPost.Content,
+	})
 }

@@ -19,7 +19,7 @@ var (
 // PostController struct
 type PostController struct{}
 
-// NewPostController create struct post controller
+// NewPostController contructor
 func NewPostController() PostController {
 	return PostController{}
 }
