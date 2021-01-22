@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// CategoryController struct
 type CategoryController struct{}
 
 // NewCategoryController contructor
