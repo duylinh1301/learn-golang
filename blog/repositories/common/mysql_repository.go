@@ -5,7 +5,6 @@ import (
 	"blog/repositories/interfaces"
 	"fmt"
 	"log"
-	"reflect"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -39,8 +38,6 @@ func NewMysqlRepository() interfaces.BaseRepositoryInterface {
 
 // All function get all records from model
 func (*MysqlRepository) All(model interface{}) {
-	fmt.Println(reflect.TypeOf(model))
-	fmt.Println(model)
 	db.Find(model)
 }
 

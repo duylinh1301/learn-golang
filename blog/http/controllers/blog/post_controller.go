@@ -1,4 +1,4 @@
-package postcontroller
+package blog
 
 import (
 	// db "blog/bootstrap"
@@ -16,8 +16,16 @@ var (
 	// postRepository interfaces.PostRepositoryInterface = mongodb.NewPostRepository()
 )
 
+// PostController struct
+type PostController struct{}
+
+// NewPostController create struct post controller
+func NewPostController() PostController {
+	return PostController{}
+}
+
 // GetAll return all posts
-func GetAll(w http.ResponseWriter, r *http.Request) {
+func (*PostController) GetAll(w http.ResponseWriter, r *http.Request) {
 
 	post := postRepository.All()
 
@@ -27,7 +35,7 @@ func GetAll(w http.ResponseWriter, r *http.Request) {
 }
 
 // Create posts data
-func Create(w http.ResponseWriter, r *http.Request) {
+func (*PostController) Create(w http.ResponseWriter, r *http.Request) {
 
 	var post models.Post
 
