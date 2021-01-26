@@ -3,11 +3,8 @@ package blog
 import (
 	// db "blog/bootstrap"
 
-	"blog/http/request"
-	"blog/http/response"
-	"blog/models"
 	"blog/repositories/implement"
-	"log"
+	"blog/repositories/interfaces"
 	"net/http"
 )
 
@@ -17,19 +14,23 @@ var (
 )
 
 // PostController struct
-type PostController struct{}
+type PostController struct {
+	postRepository interfaces.PostRepositoryInterface
+}
 
 // NewPostController contructor
 func NewPostController() PostController {
-	return PostController{}
+	return PostController{
+		postRepository: implement.NewPostRepository(),
+	}
 }
 
 // GetAll return all posts
-func (*PostController) GetAll(w http.ResponseWriter, r *http.Request) {
+func (postController *PostController) GetAll(w http.ResponseWriter, r *http.Request) {
 
-	post := postRepository.All()
+	postController.postRepository.All()
 
-	response.ReturnJSON(w, http.StatusOK, "", post)
+	// response.ReturnJSON(w, http.StatusOK, "", post)
 
 	return
 }
@@ -37,18 +38,18 @@ func (*PostController) GetAll(w http.ResponseWriter, r *http.Request) {
 // Create posts data
 func (*PostController) Create(w http.ResponseWriter, r *http.Request) {
 
-	var post models.Post
+	// var post models.Post
 
-	err := request.DecodeJSONBody(r, &post)
+	// err := request.DecodeJSONBody(r, &post)
 
-	postRepository.Create(post)
+	// postRepository.Create(post)
 
-	if err != nil {
-		log.Println(err.Error())
-		response.ReturnJSON(w, http.StatusUnsupportedMediaType, err.Error(), nil)
-		return
-	}
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// 	response.ReturnJSON(w, http.StatusUnsupportedMediaType, err.Error(), nil)
+	// 	return
+	// }
 
-	response.ReturnJSON(w, http.StatusOK, "", nil)
-	return
+	// response.ReturnJSON(w, http.StatusOK, "", nil)
+	// return
 }
