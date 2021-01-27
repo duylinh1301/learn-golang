@@ -1,4 +1,4 @@
-package blog
+package controllers
 
 import (
 	// db "blog/bootstrap"
@@ -12,11 +12,6 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-)
-
-var (
-	postRepository = implement.NewPostRepository()
-	// postRepository interfaces.PostRepositoryInterface = mongodb.NewPostRepository()
 )
 
 // PostController struct
@@ -48,7 +43,40 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 
 	err := request.DecodeJSONBody(r, &post)
 
+	if err != nil {
+		log.Println(err.Error())
+
+		response.ReturnJSON(w, http.StatusUnsupportedMediaType, err.Error(), nil)
+
+		return
+	}
+
 	// Validate data
+
+	postController.postRepository.Create(post)
+
+	response.ReturnJSON(w, http.StatusOK, "", nil)
+
+	return
+}
+
+func (postController *PostController) Update(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+
+	id := vars["id"]
+
+	post := postController.postRepository.FindById(id)
+
+	if (models.Post{}) == *post {
+		response.ReturnJSON(w, http.StatusNotFound, "Post not found!", nil)
+
+		return
+	}
+
+	data := models.Post{}
+
+	err := request.DecodeJSONBody(r, &data)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -58,7 +86,13 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	postController.postRepository.Create(post)
+	postController.postRepository.UpdateById(id, data)
+
+	if (models.Post{}) == *post {
+		response.ReturnJSON(w, http.StatusNotFound, "Post not found!", nil)
+
+		return
+	}
 
 	response.ReturnJSON(w, http.StatusOK, "", nil)
 

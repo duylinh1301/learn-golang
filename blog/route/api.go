@@ -2,14 +2,14 @@ package route
 
 import (
 	objects "blog/bootstrap/objects"
-	blog "blog/http/controllers/blog"
+	controllers "blog/http/controllers"
 	"net/http"
 )
 
 // Define array of routes
 var (
-	postcontroller     blog.PostController     = blog.NewPostController()
-	categorycontroller blog.CategoryController = blog.NewCategoryController()
+	postcontroller     controllers.PostController     = controllers.NewPostController()
+	categorycontroller controllers.CategoryController = controllers.NewCategoryController()
 	// usercontroller     user.UserController     = user.NewUserController()
 
 	ApiRoutes = []objects.Route{
@@ -22,6 +22,11 @@ var (
 			Uri:     "/posts",
 			Method:  http.MethodPost,
 			Handler: postcontroller.Create,
+		},
+		objects.Route{
+			Uri:     "/posts/{id}",
+			Method:  http.MethodPut,
+			Handler: postcontroller.Update,
 		},
 		objects.Route{
 			Uri:     "/posts/{id}",

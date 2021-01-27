@@ -23,7 +23,9 @@ func DecodeJSONBody(request *http.Request, model interface{}) error {
 	err := decoder.Decode(&model)
 
 	if err != nil {
-		panic(err)
+		msg := "Data invalid character!"
+
+		return &exceptions.MalformedException{Status: http.StatusBadRequest, Msg: msg}
 	}
 
 	return nil

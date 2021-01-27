@@ -52,6 +52,11 @@ func (postRepository *PostRepository) Create(data models.Post) {
 	return
 }
 
+// Update post function
+func (postRepository *PostRepository) UpdateById(id string, data models.Post) {
+	postRepository.connection.Where("id = ?", id).Updates(&data)
+}
+
 // Delete post function
 func (postRepository *PostRepository) Delete(data *models.Post) {
 
