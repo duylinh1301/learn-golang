@@ -24,6 +24,15 @@ func NewPostRepository() interfaces.PostRepositoryInterface {
 	}
 }
 
+func (postRepository PostRepository) FindById(id string) *models.Post {
+
+	data := models.Post{}
+
+	postRepository.connection.First(&data, "id = ?", id)
+
+	return &data
+}
+
 // All get all
 func (postRepository PostRepository) All() *[]models.Post {
 
@@ -39,6 +48,14 @@ func (postRepository PostRepository) All() *[]models.Post {
 func (postRepository *PostRepository) Create(data models.Post) {
 
 	postRepository.connection.Create(&data)
+
+	return
+}
+
+// Delete post function
+func (postRepository *PostRepository) Delete(data *models.Post) {
+
+	postRepository.connection.Delete(data)
 
 	return
 }

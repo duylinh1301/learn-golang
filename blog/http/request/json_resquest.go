@@ -21,6 +21,7 @@ func DecodeJSONBody(request *http.Request, model interface{}) error {
 	decoder.DisallowUnknownFields()
 
 	err := decoder.Decode(&model)
+
 	if err != nil {
 		panic(err)
 	}

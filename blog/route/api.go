@@ -24,9 +24,9 @@ var (
 			Handler: postcontroller.Create,
 		},
 		objects.Route{
-			Uri:     "/categories",
-			Method:  http.MethodGet,
-			Handler: categorycontroller.GetAll,
+			Uri:     "/posts/{id}",
+			Method:  http.MethodDelete,
+			Handler: postcontroller.Delete,
 		},
 		// objects.Route{
 		// 	Uri:     "/users",

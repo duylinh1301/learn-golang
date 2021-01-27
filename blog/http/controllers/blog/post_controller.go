@@ -10,6 +10,8 @@ import (
 	"blog/repositories/interfaces"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 var (
@@ -46,6 +48,8 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 
 	err := request.DecodeJSONBody(r, &post)
 
+	// Validate data
+
 	if err != nil {
 		log.Println(err.Error())
 
@@ -55,6 +59,28 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 	}
 
 	postController.postRepository.Create(post)
+
+	response.ReturnJSON(w, http.StatusOK, "", nil)
+
+	return
+}
+
+// Delete function
+func (postController *PostController) Delete(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+
+	id := vars["id"]
+
+	post := postController.postRepository.FindById(id)
+
+	if (models.Post{}) == *post {
+		response.ReturnJSON(w, http.StatusNotFound, "Post not found!", nil)
+
+		return
+	}
+
+	postController.postRepository.Delete(post)
 
 	response.ReturnJSON(w, http.StatusOK, "", nil)
 

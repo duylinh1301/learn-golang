@@ -16,6 +16,8 @@ type JSONResponse struct {
 // ReturnJSON return json data type for every request
 func ReturnJSON(w http.ResponseWriter, code int, message string, data interface{}) {
 
+	w.Header().Set("Content-Type", "application/json")
+
 	if message == "" {
 		message = "Success!"
 	}
