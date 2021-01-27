@@ -3,7 +3,6 @@ package route
 import (
 	objects "blog/bootstrap/objects"
 	blog "blog/http/controllers/blog"
-	"blog/http/controllers/user"
 	"net/http"
 )
 
@@ -11,7 +10,7 @@ import (
 var (
 	postcontroller     blog.PostController     = blog.NewPostController()
 	categorycontroller blog.CategoryController = blog.NewCategoryController()
-	usercontroller     user.UserController     = user.NewUserController()
+	// usercontroller     user.UserController     = user.NewUserController()
 
 	ApiRoutes = []objects.Route{
 		objects.Route{
@@ -29,15 +28,15 @@ var (
 			Method:  http.MethodGet,
 			Handler: categorycontroller.GetAll,
 		},
-		objects.Route{
-			Uri:     "/users",
-			Method:  http.MethodGet,
-			Handler: usercontroller.GetAll,
-		},
-		objects.Route{
-			Uri:     "/users",
-			Method:  http.MethodPost,
-			Handler: usercontroller.Create,
-		},
+		// objects.Route{
+		// 	Uri:     "/users",
+		// 	Method:  http.MethodGet,
+		// 	Handler: usercontroller.GetAll,
+		// },
+		// objects.Route{
+		// 	Uri:     "/users",
+		// 	Method:  http.MethodPost,
+		// 	Handler: usercontroller.Create,
+		// },
 	}
 )

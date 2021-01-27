@@ -29,16 +29,16 @@ func (postRepository PostRepository) All() *[]models.Post {
 
 	arrayPost := []models.Post{}
 
+	postRepository.connection.Find(&arrayPost)
+
 	return &arrayPost
 	// return &arrayModelPost
 }
 
-// func (*PostRepository) Create(dataPostInterface models.BaseModelInterface) {
+// Create post function
+func (postRepository *PostRepository) Create(data models.Post) {
 
-// 	dataPost := dataPostInterface.(models.Post)
+	postRepository.connection.Create(&data)
 
-// 	baseRepo.Create(modelPost.TableName(), map[string]interface{}{
-// 		"Title":   dataPost.Title,
-// 		"Content": dataPost.Content,
-// 	})
-// }
+	return
+}
