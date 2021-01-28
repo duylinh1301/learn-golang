@@ -3,7 +3,6 @@ package bootstrap
 import (
 	"blog/bootstrap/objects"
 	"blog/route"
-	"fmt"
 	"strings"
 
 	"github.com/gorilla/mux"
@@ -11,7 +10,6 @@ import (
 
 // InitRoute init route
 func InitRoute() *mux.Router {
-	fmt.Println("Init Route")
 	r := mux.NewRouter().StrictSlash(true)
 	return setupRoutes(r)
 }
@@ -27,7 +25,6 @@ func setupRoutes(r *mux.Router) *mux.Router {
 		prefix := routeGroups.Prefix
 
 		for _, route := range routeGroups.Route {
-			fmt.Println("/api/" + prefix + trimRouteUrl(route.Uri))
 			r.HandleFunc("/api/"+prefix+trimRouteUrl(route.Uri), route.Handler).Methods(route.Method)
 		}
 

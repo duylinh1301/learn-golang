@@ -43,31 +43,5 @@ func (*MysqlRepository) All(model interface{}) {
 
 // Create function create a record from model
 func (*MysqlRepository) Create(table string, data map[string]interface{}) {
-	// post := models.Post{
-	// 	Title:   "Linh add title",
-	// 	Content: "Linh add content",
-	// }
-
-	// // f := make([]reflect.StructField, len(v))
-
-	// fmt.Println(reflect.TypeOf(&post))
-
-	// // result := db.Create(&post)
-
-	// fmt.Println(model)
-
-	// fmt.Println(reflect.TypeOf(&model))
-
-	// data := reflect.Indirect(reflect.ValueOf(model))
-
-	// fmt.Println(reflect.TypeOf(data.()))
-
-	// fmt.Println("data value")
-
-	// fmt.Println(fmt.Println(post.GetField()))
-
 	db.Table("posts").Create(data)
-
-	// fmt.Println(result.Error)
-
 }
