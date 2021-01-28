@@ -8,6 +8,7 @@ import (
 	"blog/models"
 	"blog/repositories/implement"
 	"blog/repositories/interfaces"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -29,6 +30,8 @@ func NewPostController() PostController {
 // GetAll return all posts
 func (postController *PostController) GetAll(w http.ResponseWriter, r *http.Request) {
 
+	fmt.Println("Post get all")
+
 	post := postController.postRepository.All()
 
 	response.ReturnJSON(w, http.StatusOK, "", post)
@@ -40,6 +43,8 @@ func (postController *PostController) GetAll(w http.ResponseWriter, r *http.Requ
 func (postController *PostController) Create(w http.ResponseWriter, r *http.Request) {
 
 	var post models.Post
+
+	fmt.Println("Post create")
 
 	err := request.DecodeJSONBody(r, &post)
 
@@ -63,6 +68,8 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 func (postController *PostController) Update(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
+
+	fmt.Println("Post Update")
 
 	id := vars["id"]
 
@@ -101,6 +108,8 @@ func (postController *PostController) Update(w http.ResponseWriter, r *http.Requ
 
 // Delete function
 func (postController *PostController) Delete(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Println("Post delete")
 
 	vars := mux.Vars(r)
 

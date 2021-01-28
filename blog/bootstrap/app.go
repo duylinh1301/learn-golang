@@ -1,11 +1,10 @@
 package bootstrap
 
 import (
+	"blog/config"
 	"fmt"
 	"log"
 	"net/http"
-
-	config "blog/config"
 
 	"gorm.io/gorm"
 )
