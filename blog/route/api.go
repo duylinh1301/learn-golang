@@ -8,7 +8,8 @@ import (
 
 // Define array of routes
 var (
-	testcontroller     *controllers.TestController    = controllers.NewTestController()
+	// testcontroller     *controllers.TestController    = controllers.NewTestController()
+	authcontroller     *controllers.AuthController    = controllers.NewAuthController()
 	postcontroller     controllers.PostController     = controllers.NewPostController()
 	categorycontroller controllers.CategoryController = controllers.NewCategoryController()
 	// usercontroller     user.UserController     = user.NewUserController()
@@ -16,6 +17,25 @@ var (
 	// ApiRoutes = objects.NewGroupRoute()
 
 	ApiRoutes = []objects.GroupRoute{
+
+		objects.GroupRoute{
+			Prefix: "auth",
+			Route: []objects.Route{
+				{
+					Name:    "auth.register",
+					Uri:     "/register",
+					Method:  http.MethodPost,
+					Handler: authcontroller.Register,
+				},
+				{
+					Name:    "auth.login",
+					Uri:     "/login",
+					Method:  http.MethodPost,
+					Handler: authcontroller.Login,
+				},
+			},
+		},
+
 		objects.GroupRoute{
 			Prefix: "posts",
 			Route: []objects.Route{
@@ -56,38 +76,4 @@ var (
 			},
 		},
 	}
-
-	// ApiRoutes = []objects.Route{
-	// 	objects.Route{
-	// 		Uri:     "/posts",
-	// 		Method:  http.MethodGet,
-	// 		Handler: postcontroller.GetAll,
-	// 	},
-	// 	objects.Route{
-	// 		Uri:     "/posts",
-	// 		Method:  http.MethodPost,
-	// 		Handler: postcontroller.Create,
-	// 	},
-	// 	objects.Route{
-	// 		Uri:     "/posts/{id}",
-	// 		Method:  http.MethodPut,
-	// 		Handler: postcontroller.Update,
-	// 	},
-	// 	objects.Route{
-	// 		Uri:     "/posts/{id}",
-	// 		Method:  http.MethodDelete,
-	// 		Handler: postcontroller.Delete,
-	// 	},
-	// 	// objects.Route{
-	// 	// 	Uri:     "/users",
-	// 	// 	Method:  http.MethodGet,
-	// 	// 	Handler: usercontroller.GetAll,
-	// 	// },
-	// 	// objects.Route{
-	// 	// 	Uri:     "/users",
-	// 	// 	Method:  http.MethodPost,
-	// 	// 	Handler: usercontroller.Create,
-	// 	// },
-	// },
-
 )
