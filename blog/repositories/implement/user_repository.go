@@ -1,13 +1,29 @@
 package implement
 
-import "blog/models"
+import (
+	"blog/helpers"
+	"blog/models"
+	"blog/repositories/connection"
 
-type UserRepository struct{}
+	"gorm.io/gorm"
+)
 
-func NewUserRepository() *UserRepository {
-	return &UserRepository{}
+type UserRepository struct {
+	connection *gorm.DB
 }
 
-func (userController *UserRepository) Register(*models.User) {
+func NewUserRepository() *UserRepository {
+	return &UserRepository{
+		connection: connection.ConnectDB(),
+	}
+}
 
+func (userRepository *UserRepository) Register(data *models.User) bool {
+	hashedPassword, _ := helpers.HashBcrypt(data.Password)
+
+	data.Password = hashedPassword
+
+	userRepository.connection.Create(data)
+
+	return true
 }

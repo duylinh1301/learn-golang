@@ -60,6 +60,7 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 	return
 }
 
+// Update update post data
 func (postController *PostController) Update(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)

@@ -3,5 +3,5 @@ package interfaces
 import "blog/models"
 
 type UserRepositoryInterface interface {
-	Register(*models.User)
+	Register(*models.User) bool
 }
