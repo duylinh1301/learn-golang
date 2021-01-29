@@ -1,14 +1,12 @@
 package controllers
 
 import (
-	"blog/config"
-	"blog/helpers"
 	"blog/http/request"
 	"blog/http/response"
+	"blog/libs"
 	"blog/models"
 	"blog/repositories/implement"
 	"blog/repositories/interfaces"
-	"fmt"
 	"log"
 	"net/http"
 )
@@ -24,10 +22,6 @@ func NewAuthController() *AuthController {
 }
 
 func (authController *AuthController) Login(w http.ResponseWriter, r *http.Request) {
-	// token, _ := CreateToken()
-
-	// fmt.Println(token)
-
 	response.ReturnJSON(w, http.StatusOK, "", map[string]interface{}{
 		"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoX3V1aWQiOiIxZGQ5MDEwYy00MzI4LTRmZjMtYjllNi05NDRkODQ4ZTkzNzUiLCJhdXRob3JpemVkIjp0cnVlLCJ1c2VyX2lkIjo3fQ.Qy8l-9GUFsXQm4jqgswAYTAX9F4cngrl28WJVYNDwtM",
 		"user_id":      "1",
@@ -37,8 +31,6 @@ func (authController *AuthController) Login(w http.ResponseWriter, r *http.Reque
 func (authController *AuthController) Register(w http.ResponseWriter, r *http.Request) {
 
 	// Validate data register
-
-	// Create new user
 
 	data := new(interface{})
 
@@ -52,31 +44,48 @@ func (authController *AuthController) Register(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	mapData := helpers.InterfaceToMap(*data)
+	// Create new user
 
-	user := models.User{
-		Username: mapData["username"].(string),
-		Email:    mapData["email"].(string),
-		Password: mapData["password"].(string),
+	// mapData := helpers.InterfaceToMap(*data)
+
+	// inputUser := models.User{
+	// 	Username: mapData["username"].(string),
+	// 	Email:    mapData["email"].(string),
+	// 	Password: mapData["password"].(string),
+	// }
+
+	// result := authController.userRepository.Register(&inputUser)
+
+	// if result == false {
+	// 	response.ReturnJSON(w, http.StatusInternalServerError, "Cannot create user!", nil)
+
+	// 	return
+	// }
+
+	createdUser := models.User{
+		ID:       15,
+		Username: "linhnguyen",
+		Email:    "linhnguyen@okxe.vn",
 	}
 
-	result := authController.userRepository.Register(&user)
+	// Create Jwt
+	accessToken, err := libs.JWTCreateToken(createdUser)
 
-	if result == false {
-		response.ReturnJSON(w, http.StatusInternalServerError, "Cannot create user!", nil)
+	if err != nil {
+		response.ReturnJSON(w, http.StatusInternalServerError, "Cannot create token!", nil)
 
 		return
 	}
 
-	timeToLive := helpers.GetValueOrDefault(config.Env["JWT_TTL"], config.Jwt["ttl"])
-
-	fmt.Println(timeToLive)
-
-	// Create Jwt
-
 	// Return Success message and JWT
 	response.ReturnJSON(w, http.StatusOK, "Register successfully!", map[string]interface{}{
-		"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoX3V1aWQiOiIxZGQ5MDEwYy00MzI4LTRmZjMtYjllNi05NDRkODQ4ZTkzNzUiLCJhdXRob3JpemVkIjp0cnVlLCJ1c2VyX2lkIjo3fQ.Qy8l-9GUFsXQm4jqgswAYTAX9F4cngrl28WJVYNDwtM",
-		"user_id":      1,
+		"access_token": accessToken,
+		"user": map[string]interface{}{
+			"id":       createdUser.ID,
+			"username": createdUser.Username,
+			"email":    createdUser.Email,
+		},
 	})
+
+	return
 }
