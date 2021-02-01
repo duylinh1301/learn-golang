@@ -8,7 +8,3 @@ type Route struct {
 	Method  string
 	Handler func(http.ResponseWriter, *http.Request)
 }
-
-func NewRoute() *Route {
-	return &Route{}
-}

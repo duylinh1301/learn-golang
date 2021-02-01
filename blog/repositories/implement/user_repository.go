@@ -14,7 +14,7 @@ type UserRepository struct {
 
 func NewUserRepository() *UserRepository {
 	return &UserRepository{
-		connection: connection.ConnectDB(),
+		connection: connection.NewConnectionDB(),
 	}
 }
 

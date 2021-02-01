@@ -11,16 +11,12 @@ import (
 // PostRepository map post model
 type PostRepository struct {
 	connection *gorm.DB
-	model      *models.Post
 }
 
 // NewPostRepository create instance
 func NewPostRepository() interfaces.PostRepositoryInterface {
-	connection := connection.ConnectDB()
-	model := new(models.Post)
 	return &PostRepository{
-		connection,
-		model,
+		connection: connection.NewConnectionDB(),
 	}
 }
 
