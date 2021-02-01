@@ -67,7 +67,7 @@ func (postController *PostController) Update(w http.ResponseWriter, r *http.Requ
 
 	id := vars["id"]
 
-	post := postController.postRepository.FindById(id)
+	post := postController.postRepository.FindByID(id)
 
 	if (models.Post{}) == *post {
 		response.ReturnJSON(w, http.StatusNotFound, "Post not found!", nil)
@@ -107,7 +107,7 @@ func (postController *PostController) Delete(w http.ResponseWriter, r *http.Requ
 
 	id := vars["id"]
 
-	post := postController.postRepository.FindById(id)
+	post := postController.postRepository.FindByID(id)
 
 	if (models.Post{}) == *post {
 		response.ReturnJSON(w, http.StatusNotFound, "Post not found!", nil)

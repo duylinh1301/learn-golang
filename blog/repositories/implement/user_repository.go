@@ -18,7 +18,7 @@ func NewUserRepository() *UserRepository {
 	}
 }
 
-func (userRepository *UserRepository) Register(data *models.User) bool {
+func (userRepository *UserRepository) CreateUserHashPassword(data *models.User) bool {
 	hashedPassword, _ := helpers.HashBcrypt(data.Password)
 
 	data.Password = hashedPassword
@@ -26,4 +26,23 @@ func (userRepository *UserRepository) Register(data *models.User) bool {
 	userRepository.connection.Create(data)
 
 	return true
+}
+
+// FindByID get record by id
+func (userRepository *UserRepository) FindByID(id string) *models.User {
+	data := models.User{}
+
+	userRepository.connection.First(&data, "id = ?", id)
+
+	return &data
+}
+
+// FirstBy get record with condition map[string]interface{}
+func (userRepository *UserRepository) FirstBy(condition map[string]interface{}) *models.User {
+
+	user := models.User{}
+
+	userRepository.connection.Select("username, password").Where(condition).First(&user)
+
+	return &user
 }

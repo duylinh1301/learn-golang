@@ -20,7 +20,7 @@ func NewPostRepository() interfaces.PostRepositoryInterface {
 	}
 }
 
-func (postRepository PostRepository) FindById(id string) *models.Post {
+func (postRepository PostRepository) FindByID(id string) *models.Post {
 
 	data := models.Post{}
 
