@@ -42,7 +42,7 @@ func (userRepository *UserRepository) FirstBy(condition map[string]interface{}) 
 
 	user := models.User{}
 
-	userRepository.connection.Select("username, password").Where(condition).First(&user)
+	userRepository.connection.Where(condition).First(&user)
 
 	return &user
 }

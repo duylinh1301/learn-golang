@@ -1,33 +1,36 @@
 package auth
 
 import (
-	"blog/config"
+	"blog/factory/auth/implement"
 	"blog/factory/auth/interfaces"
-	"fmt"
 )
 
-type AuthFactory struct {
+const TypeJWT = 1
+const TypeSession = 2
+const TypeGoogle = 3
+const TypeFacebook = 4
+
+type Auth struct {
 	AuthMethod interfaces.LoginInterface
 }
 
-func NewAuthFactory() *AuthFactory {
+func NewAuthFactory(authType int) *Auth {
 
-	authConfig := config.Auth
+	switch authType {
 
-	fmt.Println(authConfig["auth_type"]["jwt"])
+	case TypeJWT:
+		return &Auth{
+			AuthMethod: implement.NewJWTAuth(),
+		}
 
-	return &AuthFactory{
-		AuthMethod: &GoogleAuth{},
+	case TypeGoogle:
+		return &Auth{
+			AuthMethod: implement.NewGoogleAuth(),
+		}
+
+	default:
+		return &Auth{
+			AuthMethod: implement.NewSessionAuth(),
+		}
 	}
-}
-
-func (*AuthFactory) getAuthMethod(loginMethod int) interfaces.LoginInterface {
-
-	// switch loginMethod {
-
-	// case authConfig["auth_type"]["jwt"]:
-
-	// }
-
-	return &GoogleAuth{}
 }

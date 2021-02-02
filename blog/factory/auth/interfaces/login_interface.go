@@ -1,5 +1,7 @@
 package interfaces
 
+import "blog/models"
+
 type LoginInterface interface {
-	Login()
+	Login(map[string]interface{}) (interface{}, *models.User)
 }

@@ -9,7 +9,6 @@ import (
 	"blog/models"
 	"blog/repositories/implement"
 	"blog/repositories/interfaces"
-	"fmt"
 	"log"
 	"net/http"
 )
@@ -39,37 +38,26 @@ func (authController *AuthController) Login(w http.ResponseWriter, r *http.Reque
 
 	condition := map[string]interface{}{
 		"username": mapData["username"],
+		"password": mapData["password"],
 	}
 
-	authFactory := auth.NewAuthFactory()
+	authFactory := auth.NewAuthFactory(auth.TypeJWT)
 
-	authFactory.AuthMethod.Login()
+	accessToken, user := authFactory.AuthMethod.Login(condition)
 
-	fmt.Println(condition)
+	if accessToken == false {
+		response.ReturnJSON(w, http.StatusUnauthorized, "Username or password incorrect!", nil)
 
-	// Find user auth
-	user := authController.userRepository.FirstBy(condition)
+		return
+	}
 
-	fmt.Println(user)
-
-	// Create Jwt
-	// accessToken, err := authController.jwt.CreateToken(*user)
-
-	// if err != nil {
-	// 	response.ReturnJSON(w, http.StatusInternalServerError, "Cannot create token!", nil)
-
-	// 	return
-	// }
-
-	// response.ReturnJSON(w, http.StatusOK, "", map[string]interface{}{
-	// 	"access_token": accessToken,
-	// 	"user": map[string]interface{}{
-	// 		"username": user.Username,
-	// 		"email":    user.Email,
-	// 	},
-	// })
-
-	fmt.Println("done")
+	response.ReturnJSON(w, http.StatusOK, "", map[string]interface{}{
+		"access_token": accessToken,
+		"user": map[string]interface{}{
+			"username": user.Username,
+			"email":    user.Email,
+		},
+	})
 
 	return
 }
