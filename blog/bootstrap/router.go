@@ -2,8 +2,9 @@ package bootstrap
 
 import (
 	"blog/bootstrap/objects"
+	"blog/middleware"
 	"blog/route"
-	"fmt"
+	"net/http"
 	"strings"
 
 	"github.com/gorilla/mux"
@@ -12,22 +13,46 @@ import (
 // InitRoute init route
 func InitRoute() *mux.Router {
 	r := mux.NewRouter().StrictSlash(true)
+
 	return setupRoutes(r)
 }
 
-// LoadRoutes load all route defined in route/api.go
-func LoadRouteGroups() []objects.GroupRoute {
+// LoadResouceRoute load all route defined in route/api.go
+func LoadResouceRoute() []objects.ResourceRoute {
 	routes := route.ApiRoutes
 
 	return routes
 }
-func setupRoutes(r *mux.Router) *mux.Router {
-	for _, routeGroups := range LoadRouteGroups() {
-		prefix := routeGroups.Prefix
 
-		for _, route := range routeGroups.Route {
-			fmt.Println(prefix, route.Uri, route.Method)
-			r.HandleFunc("/api/"+prefix+trimRouteUrl(route.Uri), route.Handler).Methods(route.Method)
+func setupRoutes(r *mux.Router) *mux.Router {
+	for _, resourceRoute := range LoadResouceRoute() {
+		prefix := resourceRoute.Prefix
+
+		for _, route := range resourceRoute.Route {
+			numberResourceMiddleware := len(resourceRoute.MiddlewareHandler)
+
+			numberRouteMiddleware := len(route.MiddlewareHandler)
+
+			if numberResourceMiddleware > 0 || numberRouteMiddleware > 0 {
+				if numberResourceMiddleware > 0 {
+					r.HandleFunc("/api/"+prefix+trimRouteUrl(route.Uri), middleware.Adapt(
+						http.HandlerFunc(route.Handler),
+						resourceRoute.MiddlewareHandler,
+					).ServeHTTP).Methods(route.Method)
+				}
+
+				if numberRouteMiddleware > 0 {
+					r.HandleFunc("/api/"+prefix+trimRouteUrl(route.Uri), middleware.Adapt(
+						http.HandlerFunc(route.Handler),
+						route.MiddlewareHandler,
+					).ServeHTTP).Methods(route.Method)
+
+				}
+
+			} else {
+				r.HandleFunc("/api/"+prefix+trimRouteUrl(route.Uri), route.Handler).Methods(route.Method)
+			}
+
 		}
 
 	}

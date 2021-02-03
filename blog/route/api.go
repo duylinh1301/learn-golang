@@ -3,6 +3,7 @@ package route
 import (
 	"blog/bootstrap/objects"
 	controllers "blog/http/controllers"
+	"blog/middleware"
 	"net/http"
 )
 
@@ -14,11 +15,11 @@ var (
 	categorycontroller controllers.CategoryController = controllers.NewCategoryController()
 	// usercontroller     user.UserController     = user.NewUserController()
 
-	// ApiRoutes = objects.NewGroupRoute()
+	// ApiRoutes = objects.NewResourceRoute()
 
-	ApiRoutes = []objects.GroupRoute{
+	ApiRoutes = []objects.ResourceRoute{
 
-		objects.GroupRoute{
+		objects.ResourceRoute{
 			Prefix: "auth",
 			Route: []objects.Route{
 				{
@@ -36,8 +37,11 @@ var (
 			},
 		},
 
-		objects.GroupRoute{
+		objects.ResourceRoute{
 			Prefix: "posts",
+			MiddlewareHandler: []middleware.MiddlewareAdapter{
+				middleware.CheckJWT(),
+			},
 			Route: []objects.Route{
 				{
 					Uri:     "/",
@@ -64,7 +68,7 @@ var (
 			},
 		},
 
-		objects.GroupRoute{
+		objects.ResourceRoute{
 			Prefix: "categories",
 			Route: []objects.Route{
 				{

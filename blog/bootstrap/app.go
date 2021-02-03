@@ -6,11 +6,22 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	"gorm.io/gorm"
 )
 
 var db *gorm.DB
+
+type Adapter func(http.Handler) http.Handler
+
+// Adapt takes Handler funcs and chains them to the main handler.
+func Adapt(handler http.Handler, adapters ...Adapter) http.Handler {
+	// The loop is reversed so the adapters/middleware gets executed in the same
+	// order as provided in the array.
+	for i := len(adapters); i > 0; i-- {
+		handler = adapters[i-1](handler)
+	}
+	return handler
+}
 
 // HandleRequests load all config for every request
 func HandleRequests() {
@@ -19,13 +30,7 @@ func HandleRequests() {
 	env := config.Env
 
 	// Declare router
-	// route := InitRoute()
-
-	route := mux.NewRouter().StrictSlash(true)
-
-	route.HandleFunc("/api/test/1", test1).Methods(http.MethodGet)
-	route.HandleFunc("/api/test/2", test2).Methods(http.MethodGet)
-	route.Use(middlewareTest)
+	route := InitRoute()
 
 	// Start the server on port
 	port := "10000"
@@ -41,25 +46,4 @@ func HandleRequests() {
 	fmt.Printf("[Listening]: %s:%s\n", domain, port)
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), route))
-}
-
-func test1(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("route test 1")
-}
-
-func test2(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("route test 2")
-}
-
-func middlewareTest(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
-		fmt.Println(r)
-
-		// Do stuff here
-		log.Println(r.RequestURI)
-		fmt.Println("test middleware")
-		// Call the next handler, which can be another middleware in the chain, or the final handler.
-		next.ServeHTTP(w, r)
-	})
 }

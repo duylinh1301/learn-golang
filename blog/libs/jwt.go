@@ -5,6 +5,7 @@ import (
 	"blog/helpers"
 	"blog/models"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -16,7 +17,7 @@ func NewJWT() *JWT {
 	return &JWT{}
 }
 
-func (*JWT) CreateToken(user models.User) (string, error) {
+func (jwtStruct *JWT) CreateToken(user models.User) (string, error) {
 	var (
 		err error
 
@@ -49,6 +50,29 @@ func (*JWT) CreateToken(user models.User) (string, error) {
 	return token, nil
 }
 
-func (*JWT) CheckToken() bool {
-	return true
+func (jwtStruct *JWT) VerifyToken(tokenString string) error {
+
+	secretKey := helpers.GetValueOrDefault(config.Env["JWT_SECRET"], config.Jwt["secret_key"]) //this should be in an env file
+
+	tokenString = jwtStruct.extractToken(tokenString)
+
+	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		//Make sure that the token method conform to "SigningMethodHMAC"
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(secretKey.(string)), nil
+	})
+
+	return err
+}
+
+func (jwtStruct *JWT) extractToken(bearerToken string) string {
+	splitedToken := strings.Split(bearerToken, "Bearer ")
+
+	if len(splitedToken) == 2 {
+		return splitedToken[1]
+	}
+
+	return ""
 }
