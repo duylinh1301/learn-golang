@@ -29,25 +29,16 @@ func setupRoutes(r *mux.Router) *mux.Router {
 		prefix := resourceRoute.Prefix
 
 		for _, route := range resourceRoute.Route {
-			numberResourceMiddleware := len(resourceRoute.MiddlewareHandler)
+			numberResourceMiddleware := len(resourceRoute.Middleware)
 
-			numberRouteMiddleware := len(route.MiddlewareHandler)
+			numberRouteMiddleware := len(route.Middleware)
 
 			if numberResourceMiddleware > 0 || numberRouteMiddleware > 0 {
-				if numberResourceMiddleware > 0 {
-					r.HandleFunc("/api/"+prefix+trimRouteUrl(route.Uri), middleware.Adapt(
-						http.HandlerFunc(route.Handler),
-						resourceRoute.MiddlewareHandler,
-					).ServeHTTP).Methods(route.Method)
-				}
-
-				if numberRouteMiddleware > 0 {
-					r.HandleFunc("/api/"+prefix+trimRouteUrl(route.Uri), middleware.Adapt(
-						http.HandlerFunc(route.Handler),
-						route.MiddlewareHandler,
-					).ServeHTTP).Methods(route.Method)
-
-				}
+				r.HandleFunc("/api/"+prefix+trimRouteUrl(route.Uri), middleware.Adapt(
+					http.HandlerFunc(route.Handler),
+					resourceRoute.Middleware,
+					route.Middleware,
+				).ServeHTTP).Methods(route.Method)
 
 			} else {
 				r.HandleFunc("/api/"+prefix+trimRouteUrl(route.Uri), route.Handler).Methods(route.Method)

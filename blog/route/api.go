@@ -39,7 +39,7 @@ var (
 
 		objects.ResourceRoute{
 			Prefix: "posts",
-			MiddlewareHandler: []middleware.MiddlewareAdapter{
+			Middleware: []middleware.MiddlewareAdapter{
 				middleware.CheckJWT(),
 			},
 			Route: []objects.Route{
@@ -48,6 +48,9 @@ var (
 					Name:    "posts.index",
 					Method:  http.MethodGet,
 					Handler: postcontroller.GetAll,
+					Middleware: []middleware.MiddlewareAdapter{
+						middleware.CheckRole(),
+					},
 				},
 				{
 					Uri:     "/",
