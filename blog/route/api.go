@@ -34,6 +34,12 @@ var (
 					Method:  http.MethodPost,
 					Handler: authcontroller.Login,
 				},
+				{
+					Name:    "auth.logout",
+					Uri:     "/logout",
+					Method:  http.MethodPost,
+					Handler: authcontroller.Logout,
+				},
 			},
 		},
 

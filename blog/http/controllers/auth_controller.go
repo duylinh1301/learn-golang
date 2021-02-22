@@ -105,3 +105,8 @@ func (authController *AuthController) Register(w http.ResponseWriter, r *http.Re
 
 	return
 }
+
+func (authController *AuthController) Logout(w http.ResponseWriter, r *http.Request) {
+
+	response.ReturnJSON(w, http.StatusResetContent, "Logout successfully!", nil)
+}
