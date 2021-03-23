@@ -37,7 +37,7 @@ func (authController *AuthController) Login(w http.ResponseWriter, r *http.Reque
 	mapData := helpers.InterfaceToMap(*data)
 
 	condition := map[string]interface{}{
-		"username": mapData["username"],
+		"email":    mapData["email"],
 		"password": mapData["password"],
 	}
 

@@ -3,6 +3,7 @@ package interfaces
 import "blog/models"
 
 type PostRepositoryInterface interface {
+	GetModel() *models.Post
 	FindByID(string) *models.Post
 	All() *[]models.Post
 	Create(models.Post)

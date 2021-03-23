@@ -21,11 +21,11 @@ func NewJWTAuth() *JWTAuth {
 }
 
 func (jwtAuth *JWTAuth) Login(data map[string]interface{}) (interface{}, *models.User) {
-	userName := data["username"]
+	email := data["email"]
 	password := data["password"]
 
 	user := jwtAuth.userRepository.FirstBy(map[string]interface{}{
-		"username": userName,
+		"email": email,
 	})
 
 	if *user == (models.User{}) {

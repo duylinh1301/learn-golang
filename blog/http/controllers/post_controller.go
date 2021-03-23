@@ -39,7 +39,8 @@ func (postController *PostController) GetAll(w http.ResponseWriter, r *http.Requ
 // Create posts data
 func (postController *PostController) Create(w http.ResponseWriter, r *http.Request) {
 
-	var post models.Post
+	var post = postController.postRepository.GetModel()
+	// var post = models.Post{}
 
 	err := request.DecodeJSONBody(r, &post)
 
@@ -53,7 +54,7 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 
 	// Validate data
 
-	postController.postRepository.Create(post)
+	postController.postRepository.Create(*post)
 
 	response.ReturnJSON(w, http.StatusOK, "", nil)
 

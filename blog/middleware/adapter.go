@@ -26,7 +26,6 @@ func Adapt(handler http.Handler, resourceAdapters []MiddlewareAdapter, routeAdap
 func CheckJWT() MiddlewareAdapter {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			fmt.Println("CheckJWT function")
 
 			bearerToken := r.Header.Get("Authorization")
 

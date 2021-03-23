@@ -1,10 +1,22 @@
 package models
 
+import "time"
+
 // Post model mapping posts table
 type Post struct {
-	ID      int    `json:"id"`
-	Title   string `json:"title"`
-	Content string `json:"content"`
+	ID          int       `json:"id"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	Content     string    `json:"content"`
+	Created_at  time.Time `json:"created_at"`
+	Updated_at  time.Time `json:"updated_at"`
+}
+
+func NewPost() *Post {
+	return &Post{
+		Created_at: time.Now(),
+		Updated_at: time.Now(),
+	}
 }
 
 func (Post) TableName() string {
