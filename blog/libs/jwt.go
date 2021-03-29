@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/patrickmn/go-cache"
 )
 
 type JWT struct {
@@ -109,15 +110,26 @@ func (jwtStruct *JWT) AddToBlackList(tokenString string) {
 	}
 
 	var tm time.Time
-	switch iat := claims["exp"].(type) {
+	switch exp := claims["exp"].(type) {
 	case float64:
-		tm = time.Unix(int64(iat), 0)
+		tm = time.Unix(int64(exp), 0)
 	case json.Number:
-		v, _ := iat.Int64()
+		v, _ := exp.Int64()
 		tm = time.Unix(v, 0)
 	}
 
 	fmt.Println(reflect.TypeOf(tm), tm)
+
+	left := time.Now().Sub(tm)
+
+	c := cache.New(left, left)
+
+	c.Set(tokenString, time.Now().Unix(), cache.DefaultExpiration)
+
+	foo, found := c.Get(tokenString)
+
+	fmt.Println(foo, found)
+
 	// str := fmt.Sprintf("%v", claim["exp"].(string))
 
 	// fmt.Println(str)
