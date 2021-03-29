@@ -39,6 +39,9 @@ var (
 					Uri:     "/logout",
 					Method:  http.MethodPost,
 					Handler: authcontroller.Logout,
+					Middleware: []middleware.MiddlewareAdapter{
+						middleware.CheckJWT(),
+					},
 				},
 			},
 		},

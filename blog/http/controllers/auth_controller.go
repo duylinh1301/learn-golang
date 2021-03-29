@@ -108,5 +108,9 @@ func (authController *AuthController) Register(w http.ResponseWriter, r *http.Re
 
 func (authController *AuthController) Logout(w http.ResponseWriter, r *http.Request) {
 
+	reqToken := r.Header.Get("Authorization")
+
+	authController.jwt.AddToBlackList(reqToken)
+
 	response.ReturnJSON(w, http.StatusResetContent, "Logout successfully!", nil)
 }
