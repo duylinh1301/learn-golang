@@ -5,24 +5,24 @@ import (
 	"blog/helpers"
 	"blog/http/request"
 	"blog/http/response"
-	"blog/libs"
 	"blog/models"
 	"blog/repositories/implement"
 	"blog/repositories/interfaces"
+	jwtsupport "blog/support/jwtauth"
 	"log"
 	"net/http"
 )
 
 type AuthController struct {
 	maxAttempts    int
-	jwt            *libs.JWT
+	jwt            *jwtsupport.JWT
 	userRepository interfaces.UserRepositoryInterface
 }
 
 func NewAuthController() *AuthController {
 	return &AuthController{
 		maxAttempts:    3,
-		jwt:            libs.NewJWT(),
+		jwt:            jwtsupport.NewJWT(),
 		userRepository: implement.NewUserRepository(),
 	}
 }

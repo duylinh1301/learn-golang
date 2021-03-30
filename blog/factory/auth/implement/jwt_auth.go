@@ -2,20 +2,20 @@ package implement
 
 import (
 	"blog/helpers"
-	"blog/libs"
 	"blog/models"
 	"blog/repositories/implement"
 	"blog/repositories/interfaces"
+	jwtsupport "blog/support/jwtauth"
 )
 
 type JWTAuth struct {
-	jwt            *libs.JWT
+	jwt            *jwtsupport.JWT
 	userRepository interfaces.UserRepositoryInterface
 }
 
 func NewJWTAuth() *JWTAuth {
 	return &JWTAuth{
-		jwt:            libs.NewJWT(),
+		jwt:            jwtsupport.NewJWT(),
 		userRepository: implement.NewUserRepository(),
 	}
 }

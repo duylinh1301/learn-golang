@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"blog/http/response"
-	"blog/libs"
+	jwtsupport "blog/support/jwtauth"
 	"fmt"
 	"net/http"
 )
@@ -29,7 +29,7 @@ func CheckJWT() MiddlewareAdapter {
 
 			bearerToken := r.Header.Get("Authorization")
 
-			err := libs.NewJWT().VerifyToken(bearerToken)
+			err := jwtsupport.NewJWT().VerifyToken(bearerToken)
 
 			if err != nil {
 				response.ReturnJSON(w, http.StatusUnauthorized, err.Error(), nil)
