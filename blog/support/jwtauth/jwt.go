@@ -4,6 +4,7 @@ import (
 	"blog/config"
 	"blog/helpers"
 	"blog/models"
+	supportcache "blog/support/cache"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -11,7 +12,6 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/patrickmn/go-cache"
 )
 
 type JWT struct {
@@ -27,8 +27,6 @@ func NewJWT() *JWT {
 func (jwtStruct *JWT) CreateToken(user models.User) (string, error) {
 	var (
 		err error
-
-		jwtExpireTime = helpers.GetValueOrDefault(config.Env["JWT_TTL"], config.Jwt.Ttl)
 	)
 
 	//Creating Access Token
@@ -45,7 +43,7 @@ func (jwtStruct *JWT) CreateToken(user models.User) (string, error) {
 
 	atClaims["user_id"] = user.ID
 
-	atClaims["exp"] = time.Now().Add(time.Minute * time.Duration(jwtExpireTime.(int))).Unix()
+	atClaims["exp"] = time.Now().Add(time.Minute * time.Duration(config.Jwt.Ttl)).Unix()
 
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
 
@@ -63,16 +61,12 @@ func (jwtStruct *JWT) VerifyToken(tokenString string) error {
 
 	tokenString = jwtStruct.ExtractToken(tokenString)
 
-	c := cache.New(5*time.Minute, 30*time.Second)
+	cache := supportcache.NewCacheFile()
 
-	value, found := c.Get(tokenString)
-
-	fmt.Println("verify token", value, found)
+	_, found := cache.Get(tokenString)
 
 	if found {
-		fmt.Println("Da dua vao black list")
-	} else {
-		fmt.Println("thuc hien logout")
+		return fmt.Errorf("this token has been logout!")
 	}
 
 	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -119,19 +113,11 @@ func (jwtStruct *JWT) AddToBlackList(tokenString string) {
 		tm = time.Unix(v, 0)
 	}
 
-	left := time.Now().Sub(tm)
+	leftTime := time.Now().Sub(tm)
 
-	fmt.Println(left)
+	cache := supportcache.NewCacheFile()
 
-	// c := cache.New(left, left)
-
-	c := cache.New(5*time.Minute, 30*time.Second)
-
-	c.Set(tokenString, time.Now().Unix(), cache.DefaultExpiration)
-
-	value, found := c.Get(tokenString)
-
-	fmt.Println(value, found)
+	cache.Set(tokenString, time.Now().Unix(), leftTime)
 }
 
 func check(e error) {

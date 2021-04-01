@@ -1,12 +1,13 @@
 package config
 
-var Auth = loadAuthConfig()
+var Auth = NewConfigAuth()
 
-func loadAuthConfig() map[string]interface{} {
-	return map[string]interface{}{
-		"auth_type": map[string]interface{}{
-			"jwt":     1,
-			"session": 2,
-		},
+type configAuth struct {
+	AuthType string
+}
+
+func NewConfigAuth() *configAuth {
+	return &configAuth{
+		AuthType: "jwt", // jwt, session
 	}
 }
