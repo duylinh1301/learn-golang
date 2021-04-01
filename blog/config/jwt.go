@@ -1,10 +1,15 @@
 package config
 
-var Jwt = loadJwtConfig()
+var Jwt = NewConfigJwt()
 
-func loadJwtConfig() map[string]interface{} {
-	return map[string]interface{}{
-		"secret_key": "golangapp",
-		"ttl":        1440, //
+type configJwt struct {
+	SecretKey string
+	Ttl       int64
+}
+
+func NewConfigJwt() *configJwt {
+	return &configJwt{
+		SecretKey: "golangapp",
+		Ttl:       1440,
 	}
 }

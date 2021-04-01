@@ -28,11 +28,11 @@ func (jwtStruct *JWT) CreateToken(user models.User) (string, error) {
 	var (
 		err error
 
-		jwtExpireTime = helpers.GetValueOrDefault(config.Env["JWT_TTL"], config.Jwt["ttl"])
+		jwtExpireTime = helpers.GetValueOrDefault(config.Env["JWT_TTL"], config.Jwt.Ttl)
 	)
 
 	//Creating Access Token
-	secretKey := helpers.GetValueOrDefault(config.Env["JWT_SECRET"], config.Jwt["secret_key"]) //this should be in an env file
+	secretKey := helpers.GetValueOrDefault(config.Env["JWT_SECRET"], config.Jwt.SecretKey) //this should be in an env file
 
 	if secretKey == "" {
 		secretKey = "golangapp"
@@ -59,7 +59,7 @@ func (jwtStruct *JWT) CreateToken(user models.User) (string, error) {
 
 func (jwtStruct *JWT) VerifyToken(tokenString string) error {
 
-	secretKey := helpers.GetValueOrDefault(config.Env["JWT_SECRET"], config.Jwt["secret_key"]) //this should be in an env file
+	secretKey := helpers.GetValueOrDefault(config.Env["JWT_SECRET"], config.Jwt.SecretKey) //this should be in an env file
 
 	tokenString = jwtStruct.ExtractToken(tokenString)
 
