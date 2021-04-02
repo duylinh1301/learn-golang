@@ -18,6 +18,10 @@ func NewUserRepository() *UserRepository {
 	}
 }
 
+func (userRepository UserRepository) GetModel() *models.User {
+	return models.NewUser()
+}
+
 func (userRepository *UserRepository) CreateUserHashPassword(data *models.User) bool {
 	hashedPassword, _ := helpers.HashBcrypt(data.Password)
 

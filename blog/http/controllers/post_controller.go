@@ -4,6 +4,7 @@ import (
 	// db "blog/bootstrap"
 
 	"blog/http/request"
+	postrequest "blog/http/request/post"
 	"blog/http/response"
 	"blog/models"
 	"blog/repositories/implement"
@@ -39,10 +40,11 @@ func (postController *PostController) GetAll(w http.ResponseWriter, r *http.Requ
 // Create posts data
 func (postController *PostController) Create(w http.ResponseWriter, r *http.Request) {
 
-	var post = postController.postRepository.GetModel()
-	// var post = models.Post{}
+	//
 
-	err := request.DecodeJSONBody(r, &post)
+	postRequest := postrequest.NewPostRequest()
+
+	err := request.DecodeJSONBody(r, &postRequest)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -53,6 +55,12 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 	}
 
 	// Validate data
+
+	var post = postController.postRepository.GetModel()
+
+	post.Title = postRequest.Title
+	post.Content = postRequest.Content
+	post.Description = postRequest.Description
 
 	postController.postRepository.Create(*post)
 

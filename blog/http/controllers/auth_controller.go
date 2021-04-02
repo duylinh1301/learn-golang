@@ -6,7 +6,6 @@ import (
 	"blog/http/request"
 	userrequest "blog/http/request/user"
 	"blog/http/response"
-	"blog/models"
 	"blog/repositories/implement"
 	"blog/repositories/interfaces"
 	jwtsupport "blog/support/jwtauth"
@@ -80,7 +79,7 @@ func (authController *AuthController) Register(w http.ResponseWriter, r *http.Re
 
 	// Create new user
 
-	user := models.NewUser()
+	user := authController.userRepository.GetModel()
 
 	user.Username = userRequest.Username
 	user.Email = userRequest.Email
