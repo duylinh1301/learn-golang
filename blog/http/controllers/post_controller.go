@@ -3,8 +3,8 @@ package controllers
 import (
 	// db "blog/bootstrap"
 
-	"blog/http/request"
-	postrequest "blog/http/request/post"
+	"blog/http/requests"
+	postrequest "blog/http/requests/post"
 	"blog/http/response"
 	"blog/models"
 	"blog/repositories/implement"
@@ -44,7 +44,7 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 
 	postRequest := postrequest.NewPostRequest()
 
-	err := request.DecodeJSONBody(r, &postRequest)
+	err := requests.DecodeJSONBody(r, &postRequest)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -86,7 +86,7 @@ func (postController *PostController) Update(w http.ResponseWriter, r *http.Requ
 
 	data := models.Post{}
 
-	err := request.DecodeJSONBody(r, &data)
+	err := requests.DecodeJSONBody(r, &data)
 
 	if err != nil {
 		log.Println(err.Error())

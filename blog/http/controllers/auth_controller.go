@@ -3,8 +3,8 @@ package controllers
 import (
 	"blog/factory/auth"
 	"blog/helpers"
-	"blog/http/request"
-	userrequest "blog/http/request/user"
+	"blog/http/requests"
+	userrequest "blog/http/requests/user"
 	"blog/http/response"
 	"blog/repositories/implement"
 	"blog/repositories/interfaces"
@@ -32,7 +32,7 @@ func (authController *AuthController) Login(w http.ResponseWriter, r *http.Reque
 	// Get data Body
 	data := new(interface{})
 
-	request.DecodeJSONBody(r, &data)
+	requests.DecodeJSONBody(r, &data)
 
 	mapData := helpers.InterfaceToMap(*data)
 
@@ -67,7 +67,7 @@ func (authController *AuthController) Register(w http.ResponseWriter, r *http.Re
 	// Validate data register
 	userRequest := userrequest.NewUserRequest()
 
-	err := request.DecodeJSONBody(r, &userRequest)
+	err := requests.DecodeJSONBody(r, &userRequest)
 
 	if err != nil {
 		log.Println(err.Error())
