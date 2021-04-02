@@ -4,6 +4,7 @@ import (
 	"blog/factory/auth"
 	"blog/helpers"
 	"blog/http/request"
+	userrequest "blog/http/request/user"
 	"blog/http/response"
 	"blog/models"
 	"blog/repositories/implement"
@@ -65,10 +66,9 @@ func (authController *AuthController) Login(w http.ResponseWriter, r *http.Reque
 func (authController *AuthController) Register(w http.ResponseWriter, r *http.Request) {
 
 	// Validate data register
+	userRequest := userrequest.NewUserRequest()
 
-	data := new(interface{})
-
-	err := request.DecodeJSONBody(r, &data)
+	err := request.DecodeJSONBody(r, &userRequest)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -79,15 +79,14 @@ func (authController *AuthController) Register(w http.ResponseWriter, r *http.Re
 	}
 
 	// Create new user
-	mapData := helpers.InterfaceToMap(*data)
 
-	User := models.User{
-		Username: mapData["username"].(string),
-		Email:    mapData["email"].(string),
-		Password: mapData["password"].(string),
-	}
+	user := models.NewUser()
 
-	result := authController.userRepository.CreateUserHashPassword(&User)
+	user.Username = userRequest.Username
+	user.Email = userRequest.Email
+	user.Password = userRequest.Password
+
+	result := authController.userRepository.CreateUserHashPassword(user)
 
 	if result == false {
 		response.ReturnJSON(w, http.StatusInternalServerError, "Cannot create user!", nil)
@@ -98,8 +97,8 @@ func (authController *AuthController) Register(w http.ResponseWriter, r *http.Re
 	// Return Success message and JWT
 	response.ReturnJSON(w, http.StatusOK, "Register successfully!", map[string]interface{}{
 		"user": map[string]interface{}{
-			"username": User.Username,
-			"email":    User.Email,
+			"username": user.Username,
+			"email":    user.Email,
 		},
 	})
 
