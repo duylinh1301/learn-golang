@@ -2,9 +2,8 @@ package controllers
 
 import (
 	"blog/factory/auth"
-	"blog/helpers"
 	"blog/http/requests"
-	userrequest "blog/http/requests/user"
+	authrequest "blog/http/requests/auth"
 	"blog/http/response"
 	"blog/repositories/implement"
 	"blog/repositories/interfaces"
@@ -30,15 +29,13 @@ func NewAuthController() *AuthController {
 func (authController *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 
 	// Get data Body
-	data := new(interface{})
+	loginRequest := authrequest.NewLoginRequest()
 
-	requests.DecodeJSONBody(r, &data)
-
-	mapData := helpers.InterfaceToMap(*data)
+	requests.DecodeJSONBody(r, &loginRequest)
 
 	condition := map[string]interface{}{
-		"email":    mapData["email"],
-		"password": mapData["password"],
+		"email":    loginRequest.Email,
+		"password": loginRequest.Password,
 	}
 
 	authFactory := auth.NewAuthFactory(auth.TypeJWT)
@@ -65,9 +62,9 @@ func (authController *AuthController) Login(w http.ResponseWriter, r *http.Reque
 func (authController *AuthController) Register(w http.ResponseWriter, r *http.Request) {
 
 	// Validate data register
-	userRequest := userrequest.NewUserRequest()
+	registerRequest := authrequest.NewRegisterRequest()
 
-	err := requests.DecodeJSONBody(r, &userRequest)
+	err := requests.DecodeJSONBody(r, &registerRequest)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -81,9 +78,9 @@ func (authController *AuthController) Register(w http.ResponseWriter, r *http.Re
 
 	user := authController.userRepository.GetModel()
 
-	user.Username = userRequest.Username
-	user.Email = userRequest.Email
-	user.Password = userRequest.Password
+	user.Username = registerRequest.Username
+	user.Email = registerRequest.Email
+	user.Password = registerRequest.Password
 
 	result := authController.userRepository.CreateUserHashPassword(user)
 
