@@ -1,19 +1,31 @@
 package controllers
 
 import (
-	"fmt"
+	"blog/http/response"
+	"blog/repositories/implement"
+	"blog/repositories/interfaces"
 	"net/http"
 )
 
 // CategoryController struct
-type CategoryController struct{}
+type CategoryController struct {
+	repository interfaces.CategoryRepositoryInterface
+}
 
 // NewCategoryController contructor
 func NewCategoryController() CategoryController {
-	return CategoryController{}
+	return CategoryController{
+		repository: implement.NewCategoryRepository(),
+	}
 }
 
 // GetAll return all posts
-func (*CategoryController) GetAll(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("get all function")
+func (categoryController *CategoryController) GetAll(w http.ResponseWriter, r *http.Request) {
+
+	categories := categoryController.repository.All()
+
+	response.ReturnJSON(w, http.StatusOK, "", categories)
+
+	return
+
 }

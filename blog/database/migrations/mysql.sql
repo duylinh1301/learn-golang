@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
     `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
     `name` varchar(255) NOT NULL,
+    `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
     `is_active`	tinyint(4) NOT NULL DEFAULT 0,
     `created_at` timestamp NULL DEFAULT NULL,
     `updated_at` timestamp NULL DEFAULT NULL,
