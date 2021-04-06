@@ -74,6 +74,14 @@ func (authController *AuthController) Register(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	// Validate unique email
+	if authController.userRepository.IsEmailExists(registerRequest.Email) {
+
+		response.ReturnJSON(w, http.StatusUnprocessableEntity, "This email exists! Please pick another.", nil)
+
+		return
+	}
+
 	// Create new user
 
 	user := authController.userRepository.GetModel()
