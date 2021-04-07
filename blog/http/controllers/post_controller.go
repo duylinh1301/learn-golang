@@ -61,6 +61,7 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 	post.Title = postRequest.Title
 	post.Content = postRequest.Content
 	post.Description = postRequest.Description
+	post.Category_id = postRequest.Category_id
 
 	postController.postRepository.Create(*post)
 
