@@ -4,7 +4,6 @@ import (
 	"blog/models"
 	"blog/repositories/connection"
 	"blog/repositories/interfaces"
-	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -27,7 +26,6 @@ func (postRepository PostRepository) GetModel() *models.Post {
 }
 
 func (postRepository PostRepository) FindByID(id string) *models.Post {
-
 	data := models.Post{}
 
 	postRepository.connection.First(&data, "id = ?", id)
@@ -37,21 +35,16 @@ func (postRepository PostRepository) FindByID(id string) *models.Post {
 
 // All get all
 func (postRepository PostRepository) All() *[]models.Post {
-
 	arrayPost := []models.Post{}
 
-	postRepository.connection.Preload("Category").Find(&arrayPost)
+	postRepository.connection.Find(&arrayPost)
 
 	return &arrayPost
-	// return &arrayModelPost
 }
 
 // Create post function
 func (postRepository *PostRepository) Create(data models.Post) {
-
-	createdEnitity := postRepository.connection.Create(&data)
-
-	fmt.Println(createdEnitity)
+	postRepository.connection.Create(&data)
 
 	return
 }
@@ -59,12 +52,14 @@ func (postRepository *PostRepository) Create(data models.Post) {
 // Update post function
 func (postRepository *PostRepository) UpdateById(id string, data models.Post) {
 	data.Updated_at = time.Now()
+
 	postRepository.connection.Where("id = ?", id).Updates(&data)
+
+	return
 }
 
 // Delete post function
 func (postRepository *PostRepository) Delete(data *models.Post) {
-
 	postRepository.connection.Delete(data)
 
 	return

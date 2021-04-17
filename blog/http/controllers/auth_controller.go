@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"blog/factory/auth"
+	"blog/helpers"
 	"blog/http/requests"
 	authrequest "blog/http/requests/auth"
 	"blog/http/response"
@@ -43,12 +44,12 @@ func (authController *AuthController) Login(w http.ResponseWriter, r *http.Reque
 	accessToken, user := authFactory.AuthMethod.Login(condition)
 
 	if accessToken == false {
-		response.ReturnJSON(w, http.StatusUnauthorized, "Username or password incorrect!", nil)
+		response.ReturnJSON(w, http.StatusUnauthorized, response.MessageIncorrectCredentailValidate, nil)
 
 		return
 	}
 
-	response.ReturnJSON(w, http.StatusOK, "", map[string]interface{}{
+	response.ReturnJSON(w, http.StatusOK, response.MessageSuccess, map[string]interface{}{
 		"access_token": accessToken,
 		"user": map[string]interface{}{
 			"username": user.Username,
@@ -77,7 +78,7 @@ func (authController *AuthController) Register(w http.ResponseWriter, r *http.Re
 	// Validate unique email
 	if authController.userRepository.IsEmailExists(registerRequest.Email) {
 
-		response.ReturnJSON(w, http.StatusUnprocessableEntity, "This email exists! Please pick another.", nil)
+		response.ReturnJSON(w, http.StatusUnprocessableEntity, response.MessageEmailExistsValidate, nil)
 
 		return
 	}
@@ -99,7 +100,7 @@ func (authController *AuthController) Register(w http.ResponseWriter, r *http.Re
 	}
 
 	// Return Success message and JWT
-	response.ReturnJSON(w, http.StatusOK, "Register successfully!", map[string]interface{}{
+	response.ReturnJSON(w, http.StatusOK, response.MessageRegisterSuccees, map[string]interface{}{
 		"user": map[string]interface{}{
 			"username": user.Username,
 			"email":    user.Email,
@@ -115,5 +116,14 @@ func (authController *AuthController) Logout(w http.ResponseWriter, r *http.Requ
 
 	authController.jwt.AddToBlackList(reqToken)
 
-	response.ReturnJSON(w, http.StatusResetContent, "Logout successfully!", nil)
+	response.ReturnJSON(w, http.StatusResetContent, response.MessageLoginSuccees, nil)
+
+	return
+}
+
+func (authController *AuthController) User(w http.ResponseWriter, r *http.Request) {
+
+	response.ReturnJSON(w, http.StatusResetContent, response.MessageSuccess, helpers.AuthUser())
+
+	return
 }

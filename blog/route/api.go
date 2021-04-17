@@ -48,6 +48,15 @@ var (
 						jwtMiddleware.CheckJWT(),
 					},
 				},
+				{
+					Name:    "auth.user",
+					Uri:     "/user",
+					Method:  http.MethodGet,
+					Handler: authcontroller.User,
+					Middleware: []middleware.MiddlewareAdapter{
+						jwtMiddleware.CheckJWT(),
+					},
+				},
 			},
 		},
 

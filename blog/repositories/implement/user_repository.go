@@ -33,7 +33,7 @@ func (userRepository *UserRepository) CreateUserHashPassword(data *models.User) 
 }
 
 // FindByID get record by id
-func (userRepository *UserRepository) FindByID(id string) *models.User {
+func (userRepository *UserRepository) FindByID(id interface{}) *models.User {
 	data := models.User{}
 
 	userRepository.connection.First(&data, "id = ?", id)

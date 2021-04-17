@@ -1,16 +1,21 @@
 package middleware
 
 import (
+	"blog/helpers"
 	"blog/http/response"
+	"blog/repositories/implement"
 	jwtsupport "blog/support/jwtauth"
 	"net/http"
 )
 
 type JWTMiddleware struct {
+	userRepository *implement.UserRepository
 }
 
 func NewJWTMiddleware() *JWTMiddleware {
-	return &JWTMiddleware{}
+	return &JWTMiddleware{
+		userRepository: implement.NewUserRepository(),
+	}
 }
 
 func (jwtMiddleware JWTMiddleware) CheckJWT() MiddlewareAdapter {
@@ -19,13 +24,21 @@ func (jwtMiddleware JWTMiddleware) CheckJWT() MiddlewareAdapter {
 
 			bearerToken := r.Header.Get("Authorization")
 
-			err := jwtsupport.NewJWT().VerifyToken(bearerToken)
+			jwtSupportInstant := jwtsupport.NewJWT()
+
+			err := jwtSupportInstant.VerifyToken(bearerToken)
 
 			if err != nil {
 				response.ReturnJSON(w, http.StatusUnauthorized, err.Error(), nil)
 
 				return
 			}
+
+			jwtClaim := jwtSupportInstant.ExtractClaims(bearerToken)
+
+			user := jwtMiddleware.userRepository.FindByID(jwtClaim["user_id"])
+
+			helpers.SetUser(user)
 
 			// Serve the next handler
 			next.ServeHTTP(w, r)

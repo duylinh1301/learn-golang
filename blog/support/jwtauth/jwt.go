@@ -1,4 +1,4 @@
-package libs
+package jwtauth
 
 import (
 	"blog/config"
@@ -118,6 +118,24 @@ func (jwtStruct *JWT) AddToBlackList(tokenString string) {
 	cache := supportcache.NewCacheFile()
 
 	cache.Set(tokenString, time.Now().Unix(), leftTime)
+}
+
+func (jwtStruct *JWT) ExtractClaims(tokenString string) jwt.MapClaims {
+
+	tokenString = jwtStruct.ExtractToken(tokenString)
+
+	token, _, err := new(jwt.Parser).ParseUnverified(tokenString, jwt.MapClaims{})
+	if err != nil {
+		fmt.Println(1)
+		log.Fatal(err)
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		log.Fatalf("Can't convert token's claims to standard claims")
+	}
+
+	return claims
 }
 
 func check(e error) {

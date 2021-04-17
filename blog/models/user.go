@@ -6,7 +6,7 @@ import "time"
 type User struct {
 	ID         int       `json:"id"`       // Unique
 	Username   string    `json:"username"` // Unique
-	Password   string    `json:"password"`
+	Password   string    `json:"-"`
 	Email      string    `json:"email"`
 	Created_at time.Time `json:"created_at"`
 	Updated_at time.Time `json:"updated_at"`

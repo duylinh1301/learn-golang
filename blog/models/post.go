@@ -6,14 +6,15 @@ import (
 
 // Post model mapping posts table
 type Post struct {
-	ID          int       `json:"id"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	Content     string    `json:"content"`
-	Category_id int       `json:"category_id"`
-	Category    Category  `gorm:"foreignKey:Category_id"`
-	Created_at  time.Time `json:"created_at"`
-	Updated_at  time.Time `json:"updated_at"`
+	ID          int    `json:"id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Content     string `json:"content"`
+	Category_id int    `json:"category_id"`
+	User_id     int    `json:"user_id"`
+	// Category    Category  `gorm:"foreignKey:Category_id"`
+	Created_at time.Time `json:"created_at"`
+	Updated_at time.Time `json:"updated_at"`
 }
 
 func NewPost() *Post {
