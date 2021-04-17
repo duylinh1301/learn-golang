@@ -41,6 +41,20 @@ func (userRepository *UserRepository) FindByID(id string) *models.User {
 	return &data
 }
 
+// FindByID get record by id
+func (userRepository *UserRepository) IsEmailExists(email string) bool {
+
+	data := models.User{}
+
+	userRepository.connection.First(&data, "email = ?", email)
+
+	if data == (models.User{}) {
+		return false
+	}
+
+	return true
+}
+
 // FirstBy get record with condition map[string]interface{}
 func (userRepository *UserRepository) FirstBy(condition map[string]interface{}) *models.User {
 

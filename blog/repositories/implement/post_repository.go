@@ -40,7 +40,7 @@ func (postRepository PostRepository) All() *[]models.Post {
 
 	arrayPost := []models.Post{}
 
-	postRepository.connection.Find(&arrayPost)
+	postRepository.connection.Preload("Category").Find(&arrayPost)
 
 	return &arrayPost
 	// return &arrayModelPost

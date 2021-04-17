@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 // Post model mapping posts table
 type Post struct {
@@ -8,6 +10,8 @@ type Post struct {
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	Content     string    `json:"content"`
+	Category_id int       `json:"category_id"`
+	Category    Category  `gorm:"foreignKey:Category_id"`
 	Created_at  time.Time `json:"created_at"`
 	Updated_at  time.Time `json:"updated_at"`
 }
