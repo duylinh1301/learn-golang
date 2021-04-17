@@ -1,6 +1,6 @@
 package objects
 
-import "blog/middleware"
+import "blog/http/middleware"
 
 type ResourceRoute struct {
 	Prefix     string

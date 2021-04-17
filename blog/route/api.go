@@ -3,16 +3,21 @@ package route
 import (
 	"blog/bootstrap/objects"
 	controllers "blog/http/controllers"
-	"blog/middleware"
+	"blog/http/middleware"
 	"net/http"
 )
 
 // Define array of routes
 var (
-	// testcontroller     *controllers.TestController    = controllers.NewTestController()
+	// Middleware
+	jwtMiddleware        *middleware.JWTMiddleware        = middleware.NewJWTMiddleware()
+	permissionMiddleware *middleware.PermissionMiddleware = middleware.NewPermissionMiddleware()
+
+	// Controller
 	authcontroller     *controllers.AuthController    = controllers.NewAuthController()
 	postcontroller     controllers.PostController     = controllers.NewPostController()
 	categorycontroller controllers.CategoryController = controllers.NewCategoryController()
+
 	// usercontroller     user.UserController     = user.NewUserController()
 
 	// ApiRoutes = objects.NewResourceRoute()
@@ -40,7 +45,7 @@ var (
 					Method:  http.MethodPost,
 					Handler: authcontroller.Logout,
 					Middleware: []middleware.MiddlewareAdapter{
-						middleware.CheckJWT(),
+						jwtMiddleware.CheckJWT(),
 					},
 				},
 			},
@@ -49,16 +54,16 @@ var (
 		objects.ResourceRoute{
 			Prefix: "posts",
 			Middleware: []middleware.MiddlewareAdapter{
-				middleware.CheckJWT(),
+				jwtMiddleware.CheckJWT(),
 			},
 			Route: []objects.Route{
 				{
 					Uri:     "/",
 					Name:    "posts.index",
 					Method:  http.MethodGet,
-					Handler: postcontroller.GetAll,
+					Handler: postcontroller.Index,
 					Middleware: []middleware.MiddlewareAdapter{
-						middleware.CheckRole(),
+						permissionMiddleware.CheckRole(),
 					},
 				},
 				{

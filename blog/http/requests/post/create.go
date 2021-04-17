@@ -1,11 +1,11 @@
 package post
 
-type PostRequest struct {
+type CreateRequest struct {
 	Title       string
 	Description string
 	Content     string
 }
 
-func NewPostRequest() *PostRequest {
-	return &PostRequest{}
+func NewCreateRequest() *CreateRequest {
+	return &CreateRequest{}
 }

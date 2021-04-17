@@ -4,6 +4,8 @@ import (
 	"blog/models"
 	"blog/repositories/connection"
 	"blog/repositories/interfaces"
+	"fmt"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -47,13 +49,16 @@ func (postRepository PostRepository) All() *[]models.Post {
 // Create post function
 func (postRepository *PostRepository) Create(data models.Post) {
 
-	postRepository.connection.Create(&data)
+	createdEnitity := postRepository.connection.Create(&data)
+
+	fmt.Println(createdEnitity)
 
 	return
 }
 
 // Update post function
 func (postRepository *PostRepository) UpdateById(id string, data models.Post) {
+	data.Updated_at = time.Now()
 	postRepository.connection.Where("id = ?", id).Updates(&data)
 }
 

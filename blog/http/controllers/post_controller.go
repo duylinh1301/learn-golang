@@ -9,6 +9,7 @@ import (
 	"blog/models"
 	"blog/repositories/implement"
 	"blog/repositories/interfaces"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -28,7 +29,7 @@ func NewPostController() PostController {
 }
 
 // GetAll return all posts
-func (postController *PostController) GetAll(w http.ResponseWriter, r *http.Request) {
+func (postController *PostController) Index(w http.ResponseWriter, r *http.Request) {
 
 	post := postController.postRepository.All()
 
@@ -42,7 +43,7 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 
 	//
 
-	postRequest := postrequest.NewPostRequest()
+	postRequest := postrequest.NewCreateRequest()
 
 	err := requests.DecodeJSONBody(r, &postRequest)
 
@@ -64,7 +65,7 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 
 	postController.postRepository.Create(*post)
 
-	response.ReturnJSON(w, http.StatusOK, "", nil)
+	response.ReturnJSON(w, http.StatusCreated, "", nil)
 
 	return
 }
@@ -72,21 +73,21 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 // Update update post data
 func (postController *PostController) Update(w http.ResponseWriter, r *http.Request) {
 
-	vars := mux.Vars(r)
-
-	id := vars["id"]
+	id := mux.Vars(r)["id"]
 
 	post := postController.postRepository.FindByID(id)
 
 	if (models.Post{}) == *post {
-		response.ReturnJSON(w, http.StatusNotFound, "Post not found!", nil)
+		response.ReturnJSON(w, http.StatusOK, "Post not found!", nil)
 
 		return
 	}
 
-	data := models.Post{}
+	updateRequest := postrequest.NewUpdateRequest()
 
-	err := requests.DecodeJSONBody(r, &data)
+	err := requests.DecodeJSONBody(r, updateRequest)
+
+	fmt.Println(*updateRequest)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -96,7 +97,11 @@ func (postController *PostController) Update(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	postController.postRepository.UpdateById(id, data)
+	post.Title = updateRequest.Title
+	post.Description = updateRequest.Description
+	post.Content = updateRequest.Content
+
+	postController.postRepository.UpdateById(id, *post)
 
 	if (models.Post{}) == *post {
 		response.ReturnJSON(w, http.StatusNotFound, "Post not found!", nil)

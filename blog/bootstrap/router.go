@@ -2,7 +2,7 @@ package bootstrap
 
 import (
 	"blog/bootstrap/objects"
-	"blog/middleware"
+	"blog/http/middleware"
 	"blog/route"
 	"net/http"
 	"strings"

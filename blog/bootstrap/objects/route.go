@@ -1,7 +1,7 @@
 package objects
 
 import (
-	"blog/middleware"
+	"blog/http/middleware"
 	"net/http"
 )
 
