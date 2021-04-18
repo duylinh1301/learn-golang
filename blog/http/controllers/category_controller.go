@@ -2,9 +2,12 @@ package controllers
 
 import (
 	"blog/http/response"
+	"blog/models"
 	"blog/repositories/implement"
 	"blog/repositories/interfaces"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 // CategoryController struct
@@ -20,12 +23,28 @@ func NewCategoryController() CategoryController {
 }
 
 // GetAll return all posts
-func (categoryController *CategoryController) GetAll(w http.ResponseWriter, r *http.Request) {
+func (categoryController *CategoryController) Index(w http.ResponseWriter, r *http.Request) {
 
 	categories := categoryController.repository.All()
 
-	response.ReturnJSON(w, http.StatusOK, "", categories)
+	response.ReturnJSON(w, http.StatusOK, response.MessageSuccess, categories)
 
 	return
+}
 
+func (categoryController *CategoryController) Delete(w http.ResponseWriter, r *http.Request) {
+
+	id := mux.Vars(r)["id"]
+
+	categories := categoryController.repository.FindByID(id)
+
+	if *categories == (models.Category{}) {
+		response.ReturnJSON(w, http.StatusOK, response.MessageNotExistsValidate, nil)
+
+		return
+	}
+
+	response.ReturnJSON(w, http.StatusOK, response.MessageDeleteSuccess, nil)
+
+	return
 }

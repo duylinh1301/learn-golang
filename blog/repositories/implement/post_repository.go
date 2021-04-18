@@ -25,6 +25,10 @@ func (postRepository PostRepository) GetModel() *models.Post {
 	return models.NewPost()
 }
 
+func (postRepository PostRepository) GetQuery() *gorm.DB {
+	return postRepository.connection
+}
+
 func (postRepository PostRepository) FindByID(id string) *models.Post {
 	data := models.Post{}
 
@@ -37,7 +41,7 @@ func (postRepository PostRepository) FindByID(id string) *models.Post {
 func (postRepository PostRepository) All() *[]models.Post {
 	arrayPost := []models.Post{}
 
-	postRepository.connection.Find(&arrayPost)
+	postRepository.connection.Preload("Category").Find(&arrayPost)
 
 	return &arrayPost
 }

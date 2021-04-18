@@ -126,7 +126,6 @@ func (jwtStruct *JWT) ExtractClaims(tokenString string) jwt.MapClaims {
 
 	token, _, err := new(jwt.Parser).ParseUnverified(tokenString, jwt.MapClaims{})
 	if err != nil {
-		fmt.Println(1)
 		log.Fatal(err)
 	}
 

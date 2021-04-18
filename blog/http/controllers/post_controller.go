@@ -34,8 +34,6 @@ func (postController *PostController) Index(w http.ResponseWriter, r *http.Reque
 
 	post := postController.postRepository.All()
 
-	fmt.Println(helpers.AuthUser())
-
 	response.ReturnJSON(w, http.StatusOK, "", post)
 
 	return
@@ -65,7 +63,7 @@ func (postController *PostController) Create(w http.ResponseWriter, r *http.Requ
 	post.Title = postRequest.Title
 	post.Content = postRequest.Content
 	post.Description = postRequest.Description
-	post.Category_id = postRequest.Category_id
+	post.CategoryID = postRequest.Category_id
 	post.User_id = helpers.AuthUser().ID
 
 	postController.postRepository.Create(*post)

@@ -18,7 +18,3 @@ func NewUser() *User {
 		Updated_at: time.Now(),
 	}
 }
-
-func (User) TableName() string {
-	return "users"
-}
